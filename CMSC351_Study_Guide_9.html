@@ -1,0 +1,3197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CMSC 351 — Algorithms Final Exam Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0f1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #2a3a55;
+    --accent: #38bdf8;
+    --accent2: #818cf8;
+    --accent3: #34d399;
+    --accent4: #fb923c;
+    --accent5: #f472b6;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --danger: #f87171;
+    --warning: #fbbf24;
+    --code-bg: #0f172a;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .site-header {
+    background: linear-gradient(135deg, #0b0f1a 0%, #111827 50%, #0f172a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 40px 20px 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .site-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 50% 50%, rgba(56,189,248,0.07) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .site-header h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+  .site-header p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    font-family: 'Space Mono', monospace;
+  }
+  .badge-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    padding: 4px 12px;
+    border-radius: 999px;
+  }
+
+  /* LAYOUT */
+  .layout {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    gap: 0;
+  }
+
+  /* SIDEBAR NAV */
+  .sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 20px 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  .nav-section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 14px 20px 6px;
+  }
+  .nav-link {
+    display: block;
+    padding: 8px 20px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.88rem;
+    transition: all 0.18s;
+    border-left: 3px solid transparent;
+  }
+  .nav-link:hover { color: var(--accent); background: rgba(56,189,248,0.05); border-left-color: var(--accent); }
+  .nav-link.active { color: var(--accent); border-left-color: var(--accent); background: rgba(56,189,248,0.08); }
+
+  /* MAIN CONTENT */
+  .main {
+    flex: 1;
+    padding: 40px 40px 80px;
+    max-width: calc(100% - 260px);
+  }
+
+  /* SECTIONS */
+  .section {
+    margin-bottom: 60px;
+    scroll-margin-top: 20px;
+  }
+  .section-title {
+    font-size: 1.9rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-title .icon { font-size: 1.5rem; }
+  .section-divider {
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    margin-bottom: 24px;
+    border-radius: 2px;
+  }
+  .subsection {
+    margin-bottom: 32px;
+  }
+  .subsection-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent2);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .subsection-title::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 18px;
+    background: var(--accent2);
+    border-radius: 2px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .card-accent {
+    border-left: 4px solid var(--accent);
+  }
+  .card-green { border-left: 4px solid var(--accent3); }
+  .card-orange { border-left: 4px solid var(--accent4); }
+  .card-purple { border-left: 4px solid var(--accent2); }
+  .card-pink { border-left: 4px solid var(--accent5); }
+  .card-red { border-left: 4px solid var(--danger); }
+
+  /* CODE */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.8;
+    overflow-x: auto;
+    margin: 12px 0;
+    white-space: pre;
+  }
+  .kw { color: var(--accent2); font-weight: 700; }
+  .cm { color: #4a5568; font-style: italic; }
+  .num { color: var(--accent3); }
+  .fn { color: var(--accent4); }
+  .str { color: var(--accent5); }
+
+  /* MATH */
+  .math {
+    font-family: 'Space Mono', monospace;
+    background: var(--code-bg);
+    color: var(--accent3);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+  .math-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    font-family: 'Space Mono', monospace;
+    color: var(--accent3);
+    font-size: 0.9rem;
+    line-height: 2;
+    margin: 12px 0;
+    overflow-x: auto;
+  }
+
+  /* TABLES */
+  .tbl {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    margin: 12px 0;
+  }
+  .tbl th {
+    background: var(--surface2);
+    color: var(--accent);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: left;
+    border: 1px solid var(--border);
+  }
+  .tbl td {
+    padding: 9px 14px;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .tbl tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  .good { color: var(--accent3); }
+  .bad { color: var(--danger); }
+  .ok { color: var(--warning); }
+
+  /* TIPS */
+  .tip {
+    background: rgba(56,189,248,0.07);
+    border: 1px solid rgba(56,189,248,0.25);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin: 12px 0;
+    font-size: 0.9rem;
+  }
+  .tip-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .warn {
+    background: rgba(251,146,60,0.07);
+    border: 1px solid rgba(251,146,60,0.25);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin: 12px 0;
+    font-size: 0.9rem;
+  }
+  .warn-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent4);
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .exam-note {
+    background: rgba(248,113,113,0.07);
+    border: 1px solid rgba(248,113,113,0.3);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin: 12px 0;
+    font-size: 0.9rem;
+  }
+  .exam-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--danger);
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  /* INTERACTIVE DIAGRAMS */
+  .algo-demo {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin: 16px 0;
+  }
+  .algo-demo-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+  .step-info {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    min-height: 40px;
+  }
+  .step-info span { color: var(--accent3); font-weight: 700; }
+  .array-visual {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    align-items: flex-end;
+  }
+  .arr-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .arr-val {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface2);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    transition: all 0.3s;
+  }
+  .arr-val.comparing { background: rgba(251,191,36,0.2); border-color: var(--warning); color: var(--warning); }
+  .arr-val.swapping { background: rgba(248,113,113,0.2); border-color: var(--danger); color: var(--danger); }
+  .arr-val.sorted { background: rgba(52,211,153,0.15); border-color: var(--accent3); color: var(--accent3); }
+  .arr-val.pivot { background: rgba(129,140,248,0.2); border-color: var(--accent2); color: var(--accent2); }
+  .arr-val.current { background: rgba(56,189,248,0.2); border-color: var(--accent); color: var(--accent); }
+  .arr-idx {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+  }
+  .demo-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  .btn {
+    padding: 8px 18px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    transition: all 0.18s;
+  }
+  .btn-prev { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+  .btn-prev:hover:not(:disabled) { border-color: var(--accent2); color: var(--accent2); }
+  .btn-next { background: var(--accent); color: #0b0f1a; }
+  .btn-next:hover:not(:disabled) { opacity: 0.85; transform: translateY(-1px); }
+  .btn-reset { background: var(--surface2); color: var(--danger); border: 1px solid rgba(248,113,113,0.3); }
+  .btn-reset:hover { border-color: var(--danger); }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important; }
+  .step-counter {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+
+  /* GRAPH VISUAL */
+  .graph-canvas {
+    width: 100%;
+    max-width: 500px;
+    height: 300px;
+    position: relative;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 12px 0;
+    overflow: hidden;
+  }
+  .graph-canvas svg { width: 100%; height: 100%; }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 10px 0;
+    font-size: 0.8rem;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-muted);
+  }
+  .legend-box {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 2px solid;
+    flex-shrink: 0;
+  }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  @media (max-width: 900px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .main { max-width: 100%; padding: 20px 16px 60px; }
+  }
+
+  /* P / NP DIAGRAM */
+  .np-diagram {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  .np-outer {
+    width: 300px;
+    height: 300px;
+    border: 3px dashed var(--accent4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: rgba(251,146,60,0.04);
+  }
+  .np-inner {
+    width: 160px;
+    height: 160px;
+    border: 3px solid var(--accent3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(52,211,153,0.06);
+    flex-direction: column;
+    gap: 4px;
+  }
+  .np-label-outer {
+    position: absolute;
+    top: 14px;
+    right: 20px;
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent4);
+  }
+  .np-label-inner {
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent3);
+  }
+  .np-items-outer {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+    text-align: left;
+  }
+  .np-items-inner {
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+    text-align: center;
+  }
+
+  /* QUICK RECALL */
+  .quick-recall {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .recall-card {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .recall-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; }
+  .recall-complexity { font-family: 'Space Mono', monospace; font-size: 0.78rem; color: var(--accent3); }
+  .recall-props { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+
+  /* HEAP VIS */
+  .heap-vis { display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 12px 0; }
+  .heap-level { display: flex; gap: 8px; justify-content: center; }
+  .heap-node {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    background: var(--surface2);
+    transition: all 0.3s;
+  }
+  .heap-node.highlighted { background: rgba(56,189,248,0.2); border-color: var(--accent); color: var(--accent); }
+  .heap-node.swapping { background: rgba(248,113,113,0.2); border-color: var(--danger); color: var(--danger); }
+  .heap-node.sorted { background: rgba(52,211,153,0.15); border-color: var(--accent3); color: var(--accent3); }
+
+  /* COLLAPSIBLE */
+  .collapsible-header {
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 4px;
+    transition: border-color 0.2s;
+  }
+  .collapsible-header:hover { border-color: var(--accent2); }
+  .collapsible-content {
+    display: none;
+    padding: 16px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0 0 8px 8px;
+    margin-top: -4px;
+    border-top: none;
+    margin-bottom: 8px;
+  }
+  .collapsible-content.open { display: block; }
+  .chevron { transition: transform 0.25s; font-size: 1.1rem; }
+  .chevron.open { transform: rotate(180deg); }
+
+  /* GRAPH SVG DEMO */
+  .svg-graph-node { fill: var(--surface2); stroke: var(--border); stroke-width: 2; cursor: pointer; transition: fill 0.3s; }
+  .svg-graph-node.visited { fill: rgba(52,211,153,0.25); stroke: var(--accent3); }
+  .svg-graph-node.current { fill: rgba(56,189,248,0.3); stroke: var(--accent); }
+  .svg-graph-node.queued { fill: rgba(129,140,248,0.2); stroke: var(--accent2); }
+  .svg-graph-node.selected { fill: rgba(251,191,36,0.25); stroke: var(--warning); }
+  .svg-graph-edge { stroke: var(--border); stroke-width: 2; }
+  .svg-graph-edge.active { stroke: var(--accent3); stroke-width: 3; }
+  .svg-graph-edge.tree-edge { stroke: var(--accent); stroke-width: 2.5; stroke-dasharray: none; }
+  .node-label { fill: var(--text); font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; text-anchor: middle; dominant-baseline: middle; pointer-events: none; }
+  .edge-weight { fill: var(--text-muted); font-family: 'Space Mono', monospace; font-size: 11px; text-anchor: middle; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>CMSC 351 — Algorithms</h1>
+  <p>Final Exam Study Guide — Comprehensive Review</p>
+  <div class="badge-row">
+    <span class="badge">Sorting</span>
+    <span class="badge">Big-O</span>
+    <span class="badge">Graphs</span>
+    <span class="badge">Dynamic Programming</span>
+    <span class="badge">Greedy</span>
+    <span class="badge">Divide &amp; Conquer</span>
+    <span class="badge">P vs NP</span>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="nav-section-label">Foundations</div>
+    <a class="nav-link" href="#big-o">Big-O Notation</a>
+    <a class="nav-link" href="#time-analysis">Time Analysis</a>
+    <a class="nav-link" href="#recurrences">Recurrence Relations</a>
+    <a class="nav-link" href="#master">Master Theorem</a>
+    <div class="nav-section-label">Sorting</div>
+    <a class="nav-link" href="#bubble">Bubble Sort</a>
+    <a class="nav-link" href="#selection">Selection Sort</a>
+    <a class="nav-link" href="#insertion">Insertion Sort</a>
+    <a class="nav-link" href="#merge">Merge Sort</a>
+    <a class="nav-link" href="#quick">Quick Sort</a>
+    <a class="nav-link" href="#heap-sort">Heap Sort</a>
+    <a class="nav-link" href="#counting">Counting Sort</a>
+    <a class="nav-link" href="#radix">Radix Sort</a>
+    <a class="nav-link" href="#limits-sort">Sorting Limits</a>
+    <div class="nav-section-label">Algorithms</div>
+    <a class="nav-link" href="#binary-search">Binary Search</a>
+    <a class="nav-link" href="#karatsuba">Karatsuba</a>
+    <a class="nav-link" href="#mcs">Max Contiguous Sum</a>
+    <div class="nav-section-label">Graphs</div>
+    <a class="nav-link" href="#graphs-intro">Graph Theory</a>
+    <a class="nav-link" href="#bfs">BFS</a>
+    <a class="nav-link" href="#dfs">DFS</a>
+    <a class="nav-link" href="#shortest-path">Shortest Path</a>
+    <a class="nav-link" href="#dijkstra">Dijkstra's</a>
+    <a class="nav-link" href="#floyd">Floyd's Algorithm</a>
+    <a class="nav-link" href="#spanning">Spanning Trees</a>
+    <div class="nav-section-label">Advanced</div>
+    <a class="nav-link" href="#huffman">Huffman Encoding</a>
+    <a class="nav-link" href="#coin">Coin Changing (DP)</a>
+    <a class="nav-link" href="#minimax">Minimax</a>
+    <a class="nav-link" href="#np">P, NP &amp; Limitations</a>
+    <div class="nav-section-label">Reference</div>
+    <a class="nav-link" href="#cheatsheet">Big Cheat Sheet</a>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- ================================================ -->
+    <!-- BIG-O NOTATION -->
+    <!-- ================================================ -->
+    <section class="section" id="big-o">
+      <div class="section-title"><span class="icon">📐</span> Big-O Notation</div>
+      <div class="section-divider"></div>
+
+      <p>Big-O notation is how we describe how fast an algorithm grows relative to its input size <span class="math">n</span>. We care about what happens as <span class="math">n</span> gets very large, ignoring constants and lower-order terms.</p>
+
+      <div class="subsection">
+        <div class="subsection-title">The Three Bigs</div>
+        <div class="grid-3">
+          <div class="card card-accent">
+            <div style="font-weight:700;color:var(--accent);margin-bottom:6px;">Big-O (Upper Bound)</div>
+            <div class="math-block">f(x) = O(g(x))
+∃ x₀, C > 0 such that
+∀ x ≥ x₀:
+f(x) ≤ C · g(x)</div>
+            <p style="font-size:0.85rem;color:var(--text-muted);">Algorithm is <em>at most</em> this slow. Worst-case guarantee.</p>
+          </div>
+          <div class="card card-green">
+            <div style="font-weight:700;color:var(--accent3);margin-bottom:6px;">Big-Ω (Lower Bound)</div>
+            <div class="math-block">f(x) = Ω(g(x))
+∃ x₀, C > 0 such that
+∀ x ≥ x₀:
+f(x) ≥ C · g(x)</div>
+            <p style="font-size:0.85rem;color:var(--text-muted);">Algorithm is <em>at least</em> this slow. Best-case guarantee.</p>
+          </div>
+          <div class="card card-purple">
+            <div style="font-weight:700;color:var(--accent2);margin-bottom:6px;">Big-Θ (Tight Bound)</div>
+            <div class="math-block">f(x) = Θ(g(x))
+⟺
+f(x) = O(g(x)) AND
+f(x) = Ω(g(x))</div>
+            <p style="font-size:0.85rem;color:var(--text-muted);">Algorithm is <em>exactly</em> this class. Both upper and lower.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">The Limit Theorem</div>
+        <p>Instead of hunting for constants, compute: <span class="math">L = lim<sub>x→∞</sub> f(x)/g(x)</span></p>
+        <div class="card">
+          <table class="tbl">
+            <tr><th>Limit L</th><th>Conclusion</th><th>Meaning</th></tr>
+            <tr><td><span class="math">L = 0</span></td><td class="good">f = O(g), f ≠ Ω(g)</td><td>g grows faster</td></tr>
+            <tr><td><span class="math">0 &lt; L &lt; ∞</span></td><td class="good">f = Θ(g)</td><td>Same growth rate</td></tr>
+            <tr><td><span class="math">L = ∞</span></td><td class="good">f = Ω(g), f ≠ O(g)</td><td>f grows faster</td></tr>
+          </table>
+        </div>
+        <div class="tip">
+          <div class="tip-label">💡 Pro Tip</div>
+          Use L'Hôpital's Rule when you get 0/0 or ∞/∞. Apply repeatedly until the limit resolves.
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Growth Rate Hierarchy (slowest → fastest)</div>
+        <div class="math-block">Θ(1) ≪ Θ(log n) ≪ Θ(√n) ≪ Θ(n) ≪ Θ(n log n) ≪ Θ(n²) ≪ Θ(n³) ≪ Θ(2ⁿ) ≪ Θ(n!)</div>
+        <div class="tip"><div class="tip-label">Key Fact</div><span class="math">log n</span> without a base usually means <span class="math">log₂ n</span>. Note that <span class="math">Θ(log₂ n) = Θ(log₃ n) = Θ(ln n)</span> because log bases differ only by a constant multiplier. But <span class="math">Θ(2ⁿ) ≠ Θ(3ⁿ)</span>!</div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Proof from Definition Example</div>
+        <p>Prove: <span class="math">5n² + 7n·lg n - lg n + 10 = O(n²)</span></p>
+        <div class="card card-accent">
+          <p><strong>Goal:</strong> Find constants <span class="math">x₀</span> and <span class="math">C</span> such that for all <span class="math">x ≥ x₀</span>: <span class="math">5n² + 7n·lg n - lg n + 10 ≤ C·n²</span></p>
+          <p style="margin-top:8px;">Since <span class="math">lg n ≤ n</span> for all <span class="math">n ≥ 1</span>:</p>
+          <div class="math-block">5n² + 7n·lg n - lg n + 10
+≤ 5n² + 7n·n + n + 10      (since lg n ≤ n)
+≤ 5n² + 7n² + n² + 10      (since n ≤ n²)
+≤ 13n² + 10n²               (since 10 ≤ 10n² for n ≥ 1)
+= 23n²</div>
+          <p>So <span class="math">C = 23</span>, <span class="math">x₀ = 1</span> works. ✓</p>
+        </div>
+      </div>
+
+      <div class="exam-note">
+        <div class="exam-label">🎯 Exam Focus</div>
+        Exams test: (1) True/False about Big-O relationships, (2) Proving from definition, (3) Using the limit theorem, (4) Combining functions (e.g., if f=Ω(n³) and g=Ω(n³), then 2f+3g=Ω(n³) using x₂=max(x₀,x₁) and c₂=2c₀+3c₁).
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- TIME ANALYSIS -->
+    <!-- ================================================ -->
+    <section class="section" id="time-analysis">
+      <div class="section-title"><span class="icon">⏱️</span> Time Complexity Analysis</div>
+      <div class="section-divider"></div>
+
+      <p>Every line of code costs time. We model this with a function <span class="math">T(n)</span> and find its Θ class.</p>
+
+      <div class="grid-2">
+        <div class="card card-accent">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Assignments</div>
+          <div class="code-block"><span class="kw">a</span> = 0         <span class="cm">← Θ(1)</span>
+<span class="kw">b</span> = 0         <span class="cm">← Θ(1)</span>
+<span class="cm">Total: Θ(1)</span></div>
+        </div>
+        <div class="card card-accent">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">For Loops</div>
+          <div class="code-block"><span class="kw">for</span> i = 0 <span class="kw">to</span> n-1:
+  x = x + 1   <span class="cm">← runs n times</span>
+<span class="cm">Total: Θ(n)</span></div>
+        </div>
+        <div class="card card-accent">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Nested Loops</div>
+          <div class="code-block"><span class="kw">for</span> i = 0 <span class="kw">to</span> n-1:
+  <span class="kw">for</span> j = 0 <span class="kw">to</span> n-1:
+    x = x + 1
+<span class="cm">Total: Θ(n²)</span></div>
+        </div>
+        <div class="card card-accent">
+          <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Triangle Loops</div>
+          <div class="code-block"><span class="kw">for</span> i = 0 <span class="kw">to</span> n-1:
+  <span class="kw">for</span> j = 0 <span class="kw">to</span> i:
+    x = x + 1
+<span class="cm">Iterations: n(n+1)/2 = Θ(n²)</span></div>
+        </div>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">📌 Key Rules</div>
+        <ul style="margin-left:16px;margin-top:4px;">
+          <li>Sequential code → <strong>add</strong> the times</li>
+          <li>Nested code → <strong>multiply</strong> the times</li>
+          <li>Keep only the dominant (largest) term</li>
+          <li>Drop constants: <span class="math">3n² = Θ(n²)</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- RECURRENCE RELATIONS -->
+    <!-- ================================================ -->
+    <section class="section" id="recurrences">
+      <div class="section-title"><span class="icon">🔄</span> Recurrence Relations</div>
+      <div class="section-divider"></div>
+
+      <p>Recursive algorithms produce recurrence relations like <span class="math">T(n) = 2T(n/2) + n</span>. We solve them two ways:</p>
+
+      <div class="subsection">
+        <div class="subsection-title">Method 1: Digging Down (Substitution)</div>
+        <p>Repeatedly substitute until you see the pattern.</p>
+        <div class="card card-purple">
+          <p><strong>Example:</strong> <span class="math">T(n) = 2T(n/2) + n</span>, <span class="math">T(1) = 1</span></p>
+          <div class="math-block">T(n) = 2T(n/2) + n
+     = 2[2T(n/4) + n/2] + n = 4T(n/4) + n + n
+     = 4[2T(n/8) + n/4] + 2n = 8T(n/8) + 3n
+     = 2^k · T(n/2^k) + k·n
+
+When n/2^k = 1, k = log₂n:
+T(n) = n·T(1) + n·log n = n + n·log n = Θ(n log n)</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Method 2: Recursion Tree</div>
+        <p>Draw a tree where each node represents a sub-problem. Sum all work across each level.</p>
+        <div class="card card-purple">
+          <p><strong>Example:</strong> <span class="math">T(n) = 3T(n/3) + n</span></p>
+          <div class="math-block">Level 0:          n          = n
+Level 1:     n/3  n/3  n/3  = n
+Level 2: n/9 n/9 ...        = n
+...
+Level k:   3^k × (n/3^k)   = n
+
+Total levels: log₃(n) + 1
+Total cost: n × log₃(n) = Θ(n log n)</div>
+        </div>
+      </div>
+
+      <div class="exam-note">
+        <div class="exam-label">🎯 Exam Focus</div>
+        You may be asked to evaluate T(n) at specific values (e.g., T(7) = 3T(1) + 15 = 27) or find a closed form.
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- MASTER THEOREM -->
+    <!-- ================================================ -->
+    <section class="section" id="master">
+      <div class="section-title"><span class="icon">👑</span> The Master Theorem</div>
+      <div class="section-divider"></div>
+
+      <p>A shortcut for solving recurrences of the form <span class="math">T(n) = aT(n/b) + f(n)</span> where <span class="math">a ≥ 1</span> and <span class="math">b > 1</span>.</p>
+
+      <div class="card card-accent" style="margin:16px 0;">
+        <div style="font-weight:700;font-size:1.1rem;margin-bottom:12px;color:var(--accent);">Master Theorem Formula</div>
+        <div style="font-weight:600;margin-bottom:8px;">Compute: <span class="math">log_b(a)</span>, then compare to the power of n in f(n).</div>
+        <table class="tbl">
+          <tr><th>Case</th><th>Condition</th><th>Result</th><th>Intuition</th></tr>
+          <tr><td><strong>Case 1</strong></td><td>f(n) = O(n<sup>c</sup>) and log_b(a) > c</td><td class="good">Θ(n<sup>log_b(a)</sup>)</td><td>Recursion dominates</td></tr>
+          <tr><td><strong>Case 2</strong></td><td>f(n) = Θ(n<sup>c</sup>) and log_b(a) = c</td><td class="good">Θ(n<sup>log_b(a)</sup> · lg n)</td><td>Both contribute equally</td></tr>
+          <tr><td><strong>Case 2f</strong></td><td>f(n) = Θ(n<sup>c</sup> lg<sup>k</sup> n) and log_b(a) = c</td><td class="good">Θ(n<sup>log_b(a)</sup> · lg<sup>k+1</sup> n)</td><td>Fancy Case 2</td></tr>
+          <tr><td><strong>Case 3</strong></td><td>f(n) = Ω(n<sup>c</sup>) and log_b(a) < c</td><td class="good">Θ(f(n))</td><td>f(n) dominates</td></tr>
+        </table>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Worked Examples</div>
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+          <span>Example 1: T(n) = 4T(n/2) + n² + lg n</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <div class="math-block">a = 4, b = 2, so log_b(a) = log₂(4) = 2
+f(n) = n² + lg n = Θ(n²), so c = 2
+log_b(a) = c = 2  →  Case 2 applies!
+Result: Θ(n² · lg n)</div>
+        </div>
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+          <span>Example 2: T(n) = 8T(n/4) + 2n + lg n</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <div class="math-block">a = 8, b = 4, so log_b(a) = log₄(8) = 3/2
+f(n) = 2n + lg n = O(n¹), so c = 1
+log_b(a) = 3/2 > 1 = c  →  Case 1 applies!
+Result: Θ(n^(3/2))</div>
+        </div>
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+          <span>Example 3: T(n) = 2T(n/3) + f(n) where f(n) = O(n)</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <div class="math-block">a = 2, b = 3, so log_b(a) = log₃(2) ≈ 0.63
+f(n) = O(n¹), so c = 1
+log_b(a) ≈ 0.63 < 1 = c  →  Case 3 applies!
+(We know f(n) = O(n) but not exactly Ω(n), so
+ we cannot fully conclude — Master Theorem requires
+ f(n) = Ω(n^c) for Case 3, NOT just O.)
+⚠️ This is a TRICK question! Cannot apply Master Theorem
+without knowing exactly what f(n) is.</div>
+        </div>
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+          <span>Example 4: T(n) = T(n/2) + n³ + n⁻³</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="collapsible-content">
+          <div class="math-block">a = 1, b = 2, so log_b(a) = log₂(1) = 0
+f(n) = n³ + n⁻³ = Θ(n³), so c = 3
+log_b(a) = 0 < 3 = c  →  Case 3 applies!
+Result: Θ(n³)</div>
+        </div>
+      </div>
+      <div class="warn">
+        <div class="warn-label">⚠️ When Master Theorem CANNOT be applied</div>
+        The recurrence must be of the form <span class="math">T(n) = aT(n/b) + f(n)</span>. If <span class="math">b ≤ 1</span>, <span class="math">a < 1</span>, or the recurrence is something like <span class="math">T(n) = T(n-1) + n</span> (not dividing), you cannot use it.
+      </div>
+      <div class="exam-note">
+        <div class="exam-label">🎯 Exam Focus</div>
+        Master Theorem is tested every exam. Always: (1) identify a, b, f(n), (2) compute log_b(a), (3) determine c from f(n), (4) compare, (5) state the case and result.
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- BUBBLE SORT -->
+    <!-- ================================================ -->
+    <section class="section" id="bubble">
+      <div class="section-title"><span class="icon">🫧</span> Bubble Sort</div>
+      <div class="section-divider"></div>
+
+      <div class="grid-2">
+        <div>
+          <p><strong>Idea:</strong> Make repeated passes through the list, swapping adjacent elements that are out of order. After pass <em>i</em>, the last <em>i</em> elements are in their correct final position.</p>
+          <div class="card card-accent" style="margin-top:12px;">
+            <table class="tbl">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Worst-case Time</td><td class="bad">Θ(n²)</td></tr>
+              <tr><td>Best-case Time</td><td class="good">Θ(n²)</td></tr>
+              <tr><td>Auxiliary Space</td><td class="good">Θ(1)</td></tr>
+              <tr><td>Stable?</td><td class="good">YES ✓</td></tr>
+              <tr><td>In-place?</td><td class="good">YES ✓</td></tr>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="code-block"><span class="kw">for</span> i = 0 <span class="kw">to</span> n-2 inclusive:
+  <span class="kw">for</span> j = 0 <span class="kw">to</span> n-i-2 inclusive:
+    <span class="kw">if</span> A[j] > A[j+1]:
+      swap A[j] <span class="kw">and</span> A[j+1]</div>
+          <div class="tip" style="margin-top:8px;">
+            <div class="tip-label">Stability</div>
+            Bubble Sort is stable because we only swap when strictly greater (>), so equal elements never swap.
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE DEMO -->
+      <div class="algo-demo">
+        <div class="algo-demo-title">▶ Interactive Demo — Bubble Sort</div>
+        <div class="step-info" id="bubble-info">Press <strong>Next</strong> to begin. Array: [8, 4, 3, 4, 1]</div>
+        <div class="array-visual" id="bubble-array"></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--warning);background:rgba(251,191,36,0.2);"></div> Comparing</div>
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--danger);background:rgba(248,113,113,0.2);"></div> Swapping</div>
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--accent3);background:rgba(52,211,153,0.15);"></div> Sorted</div>
+        </div>
+        <div class="demo-controls">
+          <button class="btn btn-prev" id="bubble-prev" onclick="bubbleStep(-1)" disabled>◀ Prev</button>
+          <button class="btn btn-next" id="bubble-next" onclick="bubbleStep(1)">Next ▶</button>
+          <button class="btn btn-reset" onclick="bubbleReset()">↺ Reset</button>
+          <span class="step-counter" id="bubble-counter">Step 0 / ?</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- SELECTION SORT -->
+    <!-- ================================================ -->
+    <section class="section" id="selection">
+      <div class="section-title"><span class="icon">🎯</span> Selection Sort</div>
+      <div class="section-divider"></div>
+
+      <div class="grid-2">
+        <div>
+          <p><strong>Idea:</strong> Find the minimum element in the unsorted portion and swap it to the front. Repeat for each position.</p>
+          <div class="card card-orange" style="margin-top:12px;">
+            <table class="tbl">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Worst-case Time</td><td class="bad">Θ(n²)</td></tr>
+              <tr><td>Best-case Time</td><td class="bad">Θ(n²)</td></tr>
+              <tr><td>Auxiliary Space</td><td class="good">Θ(1)</td></tr>
+              <tr><td>Stable?</td><td class="bad">NO ✗</td></tr>
+              <tr><td>In-place?</td><td class="good">YES ✓</td></tr>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="code-block"><span class="kw">for</span> i = 0 <span class="kw">to</span> n-2:
+  min_idx = i
+  <span class="kw">for</span> j = i+1 <span class="kw">to</span> n-1:
+    <span class="kw">if</span> A[j] < A[min_idx]:
+      min_idx = j
+  swap A[i] <span class="kw">and</span> A[min_idx]</div>
+          <div class="warn" style="margin-top:8px;">
+            <div class="warn-label">⚠️ Not Stable!</div>
+            Selection Sort is NOT stable. Swapping the minimum to the front can skip over equal elements. Example: [3<sub>a</sub>, 3<sub>b</sub>, 1] → selects 1, swaps with 3<sub>a</sub>, giving [1, 3<sub>b</sub>, 3<sub>a</sub>] — order of equal 3s is reversed.
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE DEMO -->
+      <div class="algo-demo">
+        <div class="algo-demo-title">▶ Interactive Demo — Selection Sort</div>
+        <div class="step-info" id="sel-info">Press <strong>Next</strong> to begin. Array: [4, 3, 1, 8, 3]</div>
+        <div class="array-visual" id="sel-array"></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--accent);background:rgba(56,189,248,0.2);"></div> Current Position</div>
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--warning);background:rgba(251,191,36,0.2);"></div> Current Min</div>
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--accent3);background:rgba(52,211,153,0.15);"></div> Sorted</div>
+        </div>
+        <div class="demo-controls">
+          <button class="btn btn-prev" id="sel-prev" onclick="selStep(-1)" disabled>◀ Prev</button>
+          <button class="btn btn-next" id="sel-next" onclick="selStep(1)">Next ▶</button>
+          <button class="btn btn-reset" onclick="selReset()">↺ Reset</button>
+          <span class="step-counter" id="sel-counter">Step 0 / ?</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- INSERTION SORT -->
+    <!-- ================================================ -->
+    <section class="section" id="insertion">
+      <div class="section-title"><span class="icon">📥</span> Insertion Sort</div>
+      <div class="section-divider"></div>
+
+      <div class="grid-2">
+        <div>
+          <p><strong>Idea:</strong> Like sorting cards in your hand. For each element, shift larger elements right until you find the right spot, then insert.</p>
+          <div class="card card-green" style="margin-top:12px;">
+            <table class="tbl">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Worst-case Time</td><td class="bad">Θ(n²)</td></tr>
+              <tr><td>Best-case Time</td><td class="good">Θ(n) — nearly sorted</td></tr>
+              <tr><td>Auxiliary Space</td><td class="good">Θ(1)</td></tr>
+              <tr><td>Stable?</td><td class="good">YES ✓</td></tr>
+              <tr><td>In-place?</td><td class="good">YES ✓</td></tr>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="code-block"><span class="kw">for</span> i = 1 <span class="kw">to</span> n-1:
+  key = A[i]
+  j = i - 1
+  <span class="kw">while</span> j >= 0 <span class="kw">and</span> A[j] > key:
+    A[j+1] = A[j]
+    j = j - 1
+  A[j+1] = key</div>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE DEMO -->
+      <div class="algo-demo">
+        <div class="algo-demo-title">▶ Interactive Demo — Insertion Sort</div>
+        <div class="step-info" id="ins-info">Press <strong>Next</strong> to begin. Array: [4, 3, 1, 8, 3]</div>
+        <div class="array-visual" id="ins-array"></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--accent2);background:rgba(129,140,248,0.2);"></div> Key (being inserted)</div>
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--warning);background:rgba(251,191,36,0.2);"></div> Being shifted right</div>
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--accent3);background:rgba(52,211,153,0.15);"></div> Sorted region</div>
+        </div>
+        <div class="demo-controls">
+          <button class="btn btn-prev" id="ins-prev" onclick="insStep(-1)" disabled>◀ Prev</button>
+          <button class="btn btn-next" id="ins-next" onclick="insStep(1)">Next ▶</button>
+          <button class="btn btn-reset" onclick="insReset()">↺ Reset</button>
+          <span class="step-counter" id="ins-counter">Step 0 / ?</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- MERGE SORT -->
+    <!-- ================================================ -->
+    <section class="section" id="merge">
+      <div class="section-title"><span class="icon">🔀</span> Merge Sort</div>
+      <div class="section-divider"></div>
+
+      <div class="grid-2">
+        <div>
+          <p><strong>Idea:</strong> Divide-and-conquer. Split the list in half repeatedly until each piece has 1 element, then merge sorted halves back together.</p>
+          <div class="card card-green" style="margin-top:12px;">
+            <table class="tbl">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Worst-case Time</td><td class="good">Θ(n log n)</td></tr>
+              <tr><td>Best-case Time</td><td class="good">Θ(n log n)</td></tr>
+              <tr><td>Auxiliary Space</td><td class="bad">Θ(n) — needs extra array</td></tr>
+              <tr><td>Stable?</td><td class="good">YES ✓</td></tr>
+              <tr><td>In-place?</td><td class="bad">NO ✗</td></tr>
+            </table>
+          </div>
+          <div class="tip" style="margin-top:8px;">
+            <div class="tip-label">Recurrence</div>
+            <span class="math">T(n) = 2T(n/2) + n</span> → by Master Theorem Case 2 → <span class="math">Θ(n log n)</span>
+          </div>
+        </div>
+        <div>
+          <div class="code-block"><span class="fn">MergeSort</span>(arr, start, end):
+  <span class="kw">if</span> start < end:
+    mid = (start + end) // 2
+    <span class="fn">MergeSort</span>(arr, start, mid)
+    <span class="fn">MergeSort</span>(arr, mid+1, end)
+    <span class="fn">Merge</span>(arr, start, mid,
+           mid+1, end)
+
+<span class="fn">Merge</span>(arr, s1, e1, s2, e2):
+  <span class="cm">// Compare front of each half</span>
+  <span class="cm">// and copy smaller into temp</span>
+  <span class="cm">// then copy temp back</span></div>
+        </div>
+      </div>
+
+      <!-- Merge Sort Step Demo -->
+      <div class="algo-demo">
+        <div class="algo-demo-title">▶ Interactive Demo — Merge Sort (Merge Step)</div>
+        <div class="step-info" id="merge-info">Press Next to watch two sorted halves merge together.</div>
+        <div id="merge-vis" style="font-family:'Space Mono',monospace;font-size:0.85rem;line-height:2;"></div>
+        <div class="demo-controls">
+          <button class="btn btn-prev" id="merge-prev" onclick="mergeStep(-1)" disabled>◀ Prev</button>
+          <button class="btn btn-next" id="merge-next" onclick="mergeStep(1)">Next ▶</button>
+          <button class="btn btn-reset" onclick="mergeReset()">↺ Reset</button>
+          <span class="step-counter" id="merge-counter">Step 0 / ?</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- QUICK SORT -->
+    <!-- ================================================ -->
+    <section class="section" id="quick">
+      <div class="section-title"><span class="icon">⚡</span> Quick Sort</div>
+      <div class="section-divider"></div>
+
+      <div class="grid-2">
+        <div>
+          <p><strong>Idea:</strong> Choose a <em>pivot</em> element, partition the array so everything smaller is to its left and everything larger is to its right, then recursively sort each side.</p>
+          <div class="card card-orange" style="margin-top:12px;">
+            <table class="tbl">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Worst-case Time</td><td class="bad">Θ(n²) — bad pivot</td></tr>
+              <tr><td>Best-case Time</td><td class="good">Θ(n log n)</td></tr>
+              <tr><td>Average-case</td><td class="good">Θ(n log n)</td></tr>
+              <tr><td>Auxiliary Space</td><td class="good">Θ(log n) — recursion stack</td></tr>
+              <tr><td>Stable?</td><td class="bad">NO ✗</td></tr>
+              <tr><td>In-place?</td><td class="good">YES ✓</td></tr>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="subsection-title">The Partition Process (QPP)</div>
+          <p style="font-size:0.9rem;">Using the <strong>last element</strong> as pivot:</p>
+          <div class="code-block"><span class="cm"># Pivot = last element</span>
+pivot = A[end]
+i = start - 1
+<span class="kw">for</span> j = start <span class="kw">to</span> end-1:
+  <span class="kw">if</span> A[j] <= pivot:
+    i++
+    swap A[i] <span class="kw">and</span> A[j]
+swap A[i+1] <span class="kw">and</span> A[end]
+<span class="kw">return</span> i+1  <span class="cm"># pivot's final index</span></div>
+        </div>
+      </div>
+
+      <!-- Interactive QuickSort Partition -->
+      <div class="algo-demo">
+        <div class="algo-demo-title">▶ Interactive Demo — QuickSort Partitioning</div>
+        <div class="step-info" id="qs-info">Press Next to begin. Array: [50, 30, 10, 20, 5, 18, 18, 25]. Pivot = last element.</div>
+        <div class="array-visual" id="qs-array"></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--accent2);background:rgba(129,140,248,0.2);"></div> Pivot</div>
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--accent);background:rgba(56,189,248,0.2);"></div> j (scanning)</div>
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--warning);background:rgba(251,191,36,0.2);"></div> i (boundary)</div>
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--accent3);background:rgba(52,211,153,0.15);"></div> Placed</div>
+        </div>
+        <div class="demo-controls">
+          <button class="btn btn-prev" id="qs-prev" onclick="qsStep(-1)" disabled>◀ Prev</button>
+          <button class="btn btn-next" id="qs-next" onclick="qsStep(1)">Next ▶</button>
+          <button class="btn btn-reset" onclick="qsReset()">↺ Reset</button>
+          <span class="step-counter" id="qs-counter">Step 0 / ?</span>
+        </div>
+      </div>
+
+      <div class="exam-note">
+        <div class="exam-label">🎯 Exam Focus</div>
+        Quicksort partitioning is tested every exam. You must be able to: show the state after each partition, know that the pivot ends up in its FINAL position after partitioning, and understand why worst case is Θ(n²) (already sorted input with last-element pivot).
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- HEAP SORT -->
+    <!-- ================================================ -->
+    <section class="section" id="heap-sort">
+      <div class="section-title"><span class="icon">🏔️</span> Heap Sort</div>
+      <div class="section-divider"></div>
+
+      <div class="subsection">
+        <div class="subsection-title">Complete Binary Tree &amp; Max Heap</div>
+        <div class="grid-2">
+          <div class="card card-accent">
+            <strong>Complete Binary Tree:</strong> All levels filled except possibly the last, which is filled left-to-right. Stored as an array:
+            <div class="math-block">Node at index i:
+  Left child:  2i
+  Right child: 2i+1
+  Parent:      ⌊i/2⌋
+(1-indexed!)</div>
+          </div>
+          <div class="card card-accent">
+            <strong>Max Heap:</strong> Every parent ≥ its children. The root holds the maximum element. Max heap property must hold for all nodes.
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">HeapSort Algorithm</div>
+        <div class="grid-2">
+          <div>
+            <p><strong>Phase 1 — Build Max Heap:</strong> Convert array to a max heap in Θ(n) time by calling MaxHeapify on all non-leaf nodes (bottom-up).</p>
+            <p style="margin-top:8px;"><strong>Phase 2 — Extract:</strong> Repeatedly swap root (max) with last element, shrink heap size by 1, and heapify from root.</p>
+            <div class="card card-purple" style="margin-top:12px;">
+              <table class="tbl">
+                <tr><th>Property</th><th>Value</th></tr>
+                <tr><td>Worst-case Time</td><td class="good">Θ(n log n)</td></tr>
+                <tr><td>Best-case Time</td><td class="good">Θ(n log n)</td></tr>
+                <tr><td>Build Heap</td><td class="good">Θ(n)</td></tr>
+                <tr><td>Auxiliary Space</td><td class="good">Θ(1)</td></tr>
+                <tr><td>Stable?</td><td class="bad">NO ✗</td></tr>
+                <tr><td>In-place?</td><td class="good">YES ✓</td></tr>
+              </table>
+            </div>
+          </div>
+          <div>
+            <div class="code-block"><span class="cm"># MaxHeapify: Fix one node</span>
+<span class="fn">MaxHeapify</span>(A, i, n):
+  L = 2i;  R = 2i+1;  max = i
+  <span class="kw">if</span> L <= n <span class="kw">and</span> A[L] > A[max]:
+    max = L
+  <span class="kw">if</span> R <= n <span class="kw">and</span> A[R] > A[max]:
+    max = R
+  <span class="kw">if</span> max != i:
+    swap A[i] <span class="kw">and</span> A[max]
+    <span class="fn">MaxHeapify</span>(A, max, n)
+
+<span class="cm"># Build Heap: bottom-up</span>
+<span class="kw">for</span> i = ⌊n/2⌋ downto 1:
+  <span class="fn">MaxHeapify</span>(A, i, n)
+
+<span class="cm"># HeapSort</span>
+<span class="fn">BuildMaxHeap</span>(A)
+<span class="kw">for</span> i = n downto 2:
+  swap A[1] <span class="kw">and</span> A[i]
+  <span class="fn">MaxHeapify</span>(A, 1, i-1)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Heap Interactive -->
+      <div class="algo-demo">
+        <div class="algo-demo-title">▶ Interactive Demo — Build Max Heap</div>
+        <div class="step-info" id="heap-info">Press Next to begin building a max heap from [4, 10, 3, 5, 1, 9, 8].</div>
+        <div class="heap-vis" id="heap-tree"></div>
+        <div style="font-family:'Space Mono',monospace;font-size:0.8rem;color:var(--text-muted);margin:8px 0;" id="heap-array-disp"></div>
+        <div class="demo-controls">
+          <button class="btn btn-prev" id="heap-prev" onclick="heapStep(-1)" disabled>◀ Prev</button>
+          <button class="btn btn-next" id="heap-next" onclick="heapStep(1)">Next ▶</button>
+          <button class="btn btn-reset" onclick="heapReset()">↺ Reset</button>
+          <span class="step-counter" id="heap-counter">Step 0 / ?</span>
+        </div>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">Key Proof Fact</div>
+        Building a max heap takes <strong>Θ(n)</strong> — NOT Θ(n log n) — because lower-level nodes require fewer swaps. The math works out to O(n) total.
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- COUNTING SORT -->
+    <!-- ================================================ -->
+    <section class="section" id="counting">
+      <div class="section-title"><span class="icon">🔢</span> Counting Sort</div>
+      <div class="section-divider"></div>
+
+      <div class="grid-2">
+        <div>
+          <p><strong>Idea:</strong> Not comparison-based! Count occurrences of each value, then compute prefix sums to determine final positions.</p>
+          <p style="margin-top:8px;"><strong>Requires:</strong> Non-negative integers with a known maximum <span class="math">k</span>.</p>
+          <div class="card card-pink" style="margin-top:12px;">
+            <table class="tbl">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Time</td><td class="good">Θ(n + k)</td></tr>
+              <tr><td>Auxiliary Space</td><td class="bad">Θ(n + k)</td></tr>
+              <tr><td>Stable?</td><td class="good">YES ✓</td></tr>
+              <tr><td>In-place?</td><td class="bad">NO ✗</td></tr>
+            </table>
+          </div>
+          <div class="warn" style="margin-top:8px;">
+            <div class="warn-label">⚠️ Common Misconception</div>
+            Counting sort is NOT always Θ(n). It's Θ(n+k). If k is large (e.g., sorting 5-digit numbers where k=99999), it can be much slower than Θ(n).
+          </div>
+        </div>
+        <div>
+          <div class="code-block"><span class="cm"># Given A, max value k</span>
+POS = array of zeros [0..k]
+
+<span class="cm"># Step 1: Count occurrences</span>
+<span class="kw">for</span> x <span class="kw">in</span> A:
+  POS[x]++
+
+<span class="cm"># Step 2: Prefix sums</span>
+<span class="kw">for</span> i = 1 <span class="kw">to</span> k:
+  POS[i] += POS[i-1]
+
+<span class="cm"># Step 3: Build output (right-to-left)</span>
+B = empty array of size n
+<span class="kw">for</span> j = n-1 downto 0:
+  val = A[j]
+  B[POS[val]-1] = val
+  POS[val]--</div>
+          <div class="tip" style="margin-top:8px;"><div class="tip-label">Why right-to-left?</div>Iterating right-to-left preserves stability. Equal elements appear in their original relative order in B.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- RADIX SORT -->
+    <!-- ================================================ -->
+    <section class="section" id="radix">
+      <div class="section-title"><span class="icon">📡</span> Radix Sort</div>
+      <div class="section-divider"></div>
+
+      <div class="grid-2">
+        <div>
+          <p><strong>Idea:</strong> Sort digit by digit from <em>least significant</em> to <em>most significant</em>, using a stable sort at each pass.</p>
+          <p style="margin-top:8px;"><strong>Key Insight:</strong> Works because each stable sort preserves relative order of elements tied on the current digit.</p>
+          <div class="card card-pink" style="margin-top:12px;">
+            <table class="tbl">
+              <tr><th>Variable</th><th>Meaning</th></tr>
+              <tr><td>n</td><td>Number of elements</td></tr>
+              <tr><td>d</td><td>Number of digits</td></tr>
+              <tr><td>b</td><td>Base (e.g., 10 for decimal)</td></tr>
+              <tr><th colspan="2">Time: Θ(d(n + b))</th></tr>
+            </table>
+          </div>
+        </div>
+        <div>
+          <p><strong>Example:</strong> Sort [170, 045, 075, 090, 802, 024, 002, 066]</p>
+          <div class="math-block" style="font-size:0.75rem;">Pass 1 (ones digit):
+  170, 090, 802, 002, 024, 045, 075, 066
+
+Pass 2 (tens digit):
+  802, 002, 024, 045, 066, 170, 075, 090
+
+Pass 3 (hundreds digit):
+  002, 024, 045, 066, 075, 090, 170, 802
+
+✓ Sorted!</div>
+          <div class="tip" style="margin-top:8px;"><div class="tip-label">Stable Sort</div>Each pass MUST use a stable sorting algorithm (like Counting Sort). Otherwise, previous digit work is destroyed.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- SORTING LIMITS -->
+    <!-- ================================================ -->
+    <section class="section" id="limits-sort">
+      <div class="section-title"><span class="icon">🚧</span> Comparison Sorting Limits</div>
+      <div class="section-divider"></div>
+
+      <p>Any comparison-based sorting algorithm must make at least <span class="math">Ω(n log n)</span> comparisons in the worst case. Here's why:</p>
+
+      <div class="card card-red">
+        <div style="font-weight:700;color:var(--danger);margin-bottom:8px;">Decision Tree Argument</div>
+        <p>To sort n elements, the algorithm must distinguish between all n! possible input orderings. A decision tree has at least n! leaves. A binary tree with height h has at most 2<sup>h</sup> leaves, so:</p>
+        <div class="math-block">2^h ≥ n!
+h ≥ log₂(n!) = Ω(n log n)   [by Stirling's approximation]
+
+Therefore: any comparison sort is Ω(n log n)</div>
+        <p style="margin-top:8px;"><strong>Consequence:</strong> HeapSort and MergeSort are <em>asymptotically optimal</em> for comparison-based sorting.</p>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">Why CountingSort &amp; RadixSort can break this barrier</div>
+        They are NOT comparison-based — they don't compare pairs of elements. They exploit additional structure (integer values) to sort faster.
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- BINARY SEARCH -->
+    <!-- ================================================ -->
+    <section class="section" id="binary-search">
+      <div class="section-title"><span class="icon">🔍</span> Binary Search</div>
+      <div class="section-divider"></div>
+
+      <div class="grid-2">
+        <div>
+          <p><strong>Precondition:</strong> Array must be <strong>sorted</strong>. Binary search does NOT work on unsorted arrays.</p>
+          <p style="margin-top:8px;"><strong>Idea:</strong> Look at the middle element. If target is smaller, search left half; if larger, search right half. Repeat.</p>
+          <div class="card card-accent" style="margin-top:12px;">
+            <table class="tbl">
+              <tr><th>Case</th><th>Time</th></tr>
+              <tr><td>Worst-case</td><td class="ok">Θ(log n)</td></tr>
+              <tr><td>Best-case</td><td class="good">Θ(1)</td></tr>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="code-block"><span class="fn">BinarySearch</span>(A, TARGET):
+  L = 0;  R = len(A) - 1
+  <span class="kw">while</span> L <= R:
+    C = ⌊(L + R) / 2⌋
+    <span class="kw">if</span> TARGET == A[C]:
+      <span class="kw">return</span> C
+    <span class="kw">elif</span> TARGET < A[C]:
+      R = C - 1
+    <span class="kw">else</span>:
+      L = C + 1
+  <span class="kw">return</span> FAIL</div>
+        </div>
+      </div>
+
+      <!-- Binary Search Demo -->
+      <div class="algo-demo">
+        <div class="algo-demo-title">▶ Interactive Demo — Binary Search for 17</div>
+        <div class="step-info" id="bs-info">Press Next to search for target = 17.</div>
+        <div class="array-visual" id="bs-array"></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--accent2);background:rgba(129,140,248,0.2);"></div> Active search range</div>
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--accent);background:rgba(56,189,248,0.2);"></div> Mid (C) — checking this</div>
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--text-muted);background:rgba(148,163,184,0.05);"></div> Eliminated</div>
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--accent3);background:rgba(52,211,153,0.15);"></div> Found!</div>
+        </div>
+        <div class="demo-controls">
+          <button class="btn btn-prev" id="bs-prev" onclick="bsStep(-1)" disabled>◀ Prev</button>
+          <button class="btn btn-next" id="bs-next" onclick="bsStep(1)">Next ▶</button>
+          <button class="btn btn-reset" onclick="bsReset()">↺ Reset</button>
+          <span class="step-counter" id="bs-counter">Step 0 / ?</span>
+        </div>
+      </div>
+
+      <div class="exam-note">
+        <div class="exam-label">🎯 Exam Focus</div>
+        Know: (1) max comparisons = ⌊log₂(n)⌋ + 1, (2) Binary search requires a sorted array, (3) binary search is Θ(log n) NOT Θ(n log n), (4) how many times a loop body executes.
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- KARATSUBA -->
+    <!-- ================================================ -->
+    <section class="section" id="karatsuba">
+      <div class="section-title"><span class="icon">✖️</span> Karatsuba Multiplication</div>
+      <div class="section-divider"></div>
+
+      <div class="grid-2">
+        <div>
+          <p><strong>Problem:</strong> Multiply two n-digit numbers. Schoolbook method is Θ(n²).</p>
+          <p style="margin-top:8px;"><strong>Karatsuba Insight:</strong> Split each n-digit number into two halves of n/2 digits. Normally 4 multiplications of n/2-digit numbers are needed, but Karatsuba reduces it to 3 using a clever algebraic trick.</p>
+          <div class="card card-orange" style="margin-top:12px;">
+            <table class="tbl">
+              <tr><th>Method</th><th>Time</th></tr>
+              <tr><td>Schoolbook</td><td class="bad">Θ(n²)</td></tr>
+              <tr><td>Karatsuba</td><td class="good">Θ(n<sup>log₂3</sup>) ≈ Θ(n<sup>1.585</sup>)</td></tr>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="subsection-title">The Trick</div>
+          <p>For n-digit numbers A and B, split: <span class="math">A = a·10^(n/2) + b</span>, <span class="math">B = c·10^(n/2) + d</span></p>
+          <div class="math-block">A × B = ac·10^n + (ad+bc)·10^(n/2) + bd
+
+Note: ad + bc = (a+b)(c+d) - ac - bd
+
+So we need only 3 multiplications:
+  m1 = ac
+  m2 = bd
+  m3 = (a+b)(c+d)  ← one mult!
+  ad + bc = m3 - m1 - m2</div>
+          <div class="tip"><div class="tip-label">Recurrence</div><span class="math">T(n) = 3T(n/2) + Θ(n)</span> → by Master Theorem Case 1 → <span class="math">Θ(n^log₂3)</span></div>
+        </div>
+      </div>
+      <div class="warn">
+        <div class="warn-label">⚠️ Common Exam Trap</div>
+        Karatsuba is NOT always faster than schoolbook for all n. For very small n, schoolbook may win. The exam may state: "Karatsuba is guaranteed to be faster for all n" — this is <strong>FALSE</strong>.
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- MAX CONTIGUOUS SUM -->
+    <!-- ================================================ -->
+    <section class="section" id="mcs">
+      <div class="section-title"><span class="icon">📊</span> Maximum Contiguous Sum (MCS)</div>
+      <div class="section-divider"></div>
+
+      <p><strong>Problem:</strong> Given a list of integers, find the contiguous sublist with the maximum sum. The sublist must be non-empty.</p>
+
+      <div class="subsection">
+        <div class="subsection-title">Three Approaches</div>
+        <div class="grid-3">
+          <div class="card card-red">
+            <div style="font-weight:700;color:var(--danger);margin-bottom:4px;">Brute Force</div>
+            <p style="font-size:0.85rem;">Try all O(n²) pairs (i,j) and sum each subarray.</p>
+            <div class="math-block" style="font-size:0.75rem;">Time: Θ(n³) or Θ(n²)</div>
+          </div>
+          <div class="card card-orange">
+            <div style="font-weight:700;color:var(--accent4);margin-bottom:4px;">Divide &amp; Conquer</div>
+            <p style="font-size:0.85rem;">Split in half. Max sum is either entirely in left, entirely in right, or straddles the midpoint.</p>
+            <div class="math-block" style="font-size:0.75rem;">T(n)=2T(n/2)+Θ(n)
+Time: Θ(n log n)</div>
+          </div>
+          <div class="card card-green">
+            <div style="font-weight:700;color:var(--accent3);margin-bottom:4px;">Kadane's Algorithm</div>
+            <p style="font-size:0.85rem;">Dynamic programming. Single pass. Keep running sum, reset to 0 when negative.</p>
+            <div class="math-block" style="font-size:0.75rem;">Time: Θ(n) ← FASTEST</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Kadane's Algorithm</div>
+        <div class="grid-2">
+          <div>
+            <div class="code-block"><span class="fn">Kadane</span>(A):
+  max_sum = A[0]
+  curr_sum = A[0]
+  <span class="kw">for</span> i = 1 <span class="kw">to</span> n-1:
+    curr_sum = max(A[i],
+                   curr_sum + A[i])
+    max_sum = max(max_sum, curr_sum)
+  <span class="kw">return</span> max_sum</div>
+          </div>
+          <div>
+            <p><strong>Example:</strong> <span class="math">[-9, 3, 1, 1, 4, -2, -8]</span></p>
+            <div class="math-block" style="font-size:0.78rem;">i=0: curr=-9, max=-9
+i=1: curr=max(3,-9+3)=3, max=3
+i=2: curr=max(1,3+1)=4, max=4
+i=3: curr=max(1,4+1)=5, max=5
+i=4: curr=max(4,5+4)=9, max=9
+i=5: curr=max(-2,9-2)=7, max=9
+i=6: curr=max(-8,7-8)=-1, max=9
+Answer: 9 (from [3,1,1,4])</div>
+          </div>
+        </div>
+        <div class="exam-note"><div class="exam-label">🎯 Exam Fact</div>Kadane's IS faster than D&C: Θ(n) vs Θ(n log n). Kadane's DOES work on lists with negative numbers — it's a common true/false trap.</div>
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- GRAPHS -->
+    <!-- ================================================ -->
+    <section class="section" id="graphs-intro">
+      <div class="section-title"><span class="icon">🕸️</span> Graph Theory Fundamentals</div>
+      <div class="section-divider"></div>
+
+      <div class="grid-2">
+        <div>
+          <div class="card card-accent">
+            <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Key Definitions</div>
+            <table class="tbl">
+              <tr><th>Term</th><th>Meaning</th></tr>
+              <tr><td>Graph G</td><td>Set of vertices V and edges E</td></tr>
+              <tr><td>Adjacent</td><td>Connected by an edge</td></tr>
+              <tr><td>Degree</td><td># edges at a vertex</td></tr>
+              <tr><td>Loop</td><td>Edge from vertex to itself</td></tr>
+              <tr><td>Simple</td><td>No loops, no multi-edges</td></tr>
+              <tr><td>Path</td><td>Walk with no repeated vertices</td></tr>
+              <tr><td>Cycle</td><td>Path that starts and ends at same vertex</td></tr>
+              <tr><td>Tree</td><td>Connected graph with no cycles</td></tr>
+              <tr><td>Connected</td><td>Path exists between every pair</td></tr>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="subsection-title">Adjacency Matrix vs. List</div>
+          <div class="card card-purple">
+            <strong>Adjacency Matrix (V × V):</strong>
+            <div class="math-block" style="font-size:0.78rem;">  0 1 2 3
+0[0,1,1,0]
+1[1,0,1,0]
+2[1,1,0,1]
+3[0,0,1,0]
+Space: Θ(V²) | Check edge: Θ(1)</div>
+            <strong style="margin-top:8px;display:block;">Adjacency List:</strong>
+            <div class="math-block" style="font-size:0.78rem;">0: [1, 2]
+1: [0, 2]
+2: [0, 1, 3]
+3: [2]
+Space: Θ(V+E) | Check edge: Θ(degree)</div>
+          </div>
+          <div class="tip" style="margin-top:8px;"><div class="tip-label">When to use which</div>Dense graphs → Matrix. Sparse graphs → List. Matrix great for math (matrix multiply). List great for traversal.</div>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-label">Key Formula</div>
+        In any undirected graph: sum of all degrees = 2|E| (each edge contributes to two vertices' degrees).
+        A tree with n vertices has exactly n-1 edges.
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- BFS -->
+    <!-- ================================================ -->
+    <section class="section" id="bfs">
+      <div class="section-title"><span class="icon">🌊</span> Breadth-First Traversal (BFS)</div>
+      <div class="section-divider"></div>
+
+      <div class="grid-2">
+        <div>
+          <p><strong>Idea:</strong> Explore all neighbors of a vertex before going deeper. Like ripples expanding outward from a pebble drop. Uses a <strong>Queue</strong> (FIFO).</p>
+          <div class="card card-accent" style="margin-top:12px;">
+            <table class="tbl">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Time (adj list)</td><td class="good">Θ(V + E)</td></tr>
+              <tr><td>Space</td><td class="good">Θ(V)</td></tr>
+              <tr><td>Data Structure</td><td>Queue (FIFO)</td></tr>
+            </table>
+          </div>
+          <div class="tip" style="margin-top:8px;"><div class="tip-label">Use BFS when...</div>Target is likely close to start. Finding shortest hop-count paths. Web crawling. Exploring nearby neighbors first.</div>
+        </div>
+        <div>
+          <div class="code-block"><span class="fn">BFS</span>(G, s):
+  visited = {s}
+  queue = [s]
+  <span class="kw">while</span> queue not empty:
+    x = dequeue(queue)
+    <span class="cm"># process x</span>
+    <span class="kw">for</span> y <span class="kw">in</span> neighbors(x):
+      <span class="kw">if</span> y <span class="kw">not in</span> visited:
+        visited.add(y)
+        enqueue(queue, y)</div>
+        </div>
+      </div>
+
+      <!-- BFS Interactive -->
+      <div class="algo-demo">
+        <div class="algo-demo-title">▶ Interactive Demo — BFS from Vertex 0</div>
+        <div class="step-info" id="bfs-info">Press Next to begin BFS. Graph: 0–1, 0–2, 1–3, 1–4, 2–4, 3–5</div>
+        <svg id="bfs-svg" class="graph-canvas" viewBox="0 0 500 280" style="max-width:100%;"></svg>
+        <div class="legend" style="margin-top:8px;">
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--accent);background:rgba(56,189,248,0.2);"></div> Currently processing</div>
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--accent2);background:rgba(129,140,248,0.2);"></div> In queue</div>
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--accent3);background:rgba(52,211,153,0.15);"></div> Visited</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0;">
+          <div style="background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;">
+            <div style="font-family:'Space Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:2px;color:var(--accent2);margin-bottom:6px;">Queue (FIFO) — front → back</div>
+            <div id="bfs-queue-vis" style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;min-height:32px;"></div>
+          </div>
+          <div style="background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;">
+            <div style="font-family:'Space Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:2px;color:var(--accent3);margin-bottom:6px;">Visited (processed)</div>
+            <div id="bfs-visited-vis" style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;min-height:32px;"></div>
+          </div>
+        </div>
+        <div class="demo-controls">
+          <button class="btn btn-prev" id="bfs-prev" onclick="bfsStep(-1)" disabled>◀ Prev</button>
+          <button class="btn btn-next" id="bfs-next" onclick="bfsStep(1)">Next ▶</button>
+          <button class="btn btn-reset" onclick="bfsReset()">↺ Reset</button>
+          <span class="step-counter" id="bfs-counter">Step 0 / ?</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- DFS -->
+    <!-- ================================================ -->
+    <section class="section" id="dfs">
+      <div class="section-title"><span class="icon">🤿</span> Depth-First Traversal (DFS)</div>
+      <div class="section-divider"></div>
+
+      <div class="grid-2">
+        <div>
+          <p><strong>Idea:</strong> Follow one path as far as possible before backtracking. Uses a <strong>Stack</strong> (or recursion). Think of exploring a maze: go down one path until you hit a dead end, then backtrack.</p>
+          <div class="card card-green" style="margin-top:12px;">
+            <table class="tbl">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Time (adj list)</td><td class="good">Θ(V + E)</td></tr>
+              <tr><td>Space</td><td class="good">Θ(V)</td></tr>
+              <tr><td>Data Structure</td><td>Stack (LIFO) or recursion</td></tr>
+            </table>
+          </div>
+          <div class="tip" style="margin-top:8px;"><div class="tip-label">Use DFS when...</div>Target is likely far from start. Solving mazes. Detecting cycles. Topological sorting.</div>
+        </div>
+        <div>
+          <div class="code-block"><span class="cm"># Recursive DFS</span>
+<span class="fn">DFS</span>(G, v, visited):
+  visited.add(v)
+  <span class="cm"># process v</span>
+  <span class="kw">for</span> u <span class="kw">in</span> neighbors(v):
+    <span class="kw">if</span> u <span class="kw">not in</span> visited:
+      <span class="fn">DFS</span>(G, u, visited)
+
+<span class="cm"># Stack-based DFS</span>
+<span class="fn">DFS_Stack</span>(G, s):
+  stack = [s]; visited = {}
+  <span class="kw">while</span> stack not empty:
+    v = pop(stack)
+    <span class="kw">if</span> v <span class="kw">not in</span> visited:
+      visited.add(v)
+      push neighbors of v</div>
+        </div>
+      </div>
+
+      <!-- DFS Interactive -->
+      <div class="algo-demo">
+        <div class="algo-demo-title">▶ Interactive Demo — DFS from Vertex 0 (Stack-based)</div>
+        <div class="step-info" id="dfs-info">Press Next to begin DFS. Graph: 0–1, 0–2, 1–3, 1–4, 2–4, 3–5</div>
+        <svg id="dfs-svg" class="graph-canvas" viewBox="0 0 500 280" style="max-width:100%;"></svg>
+        <div class="legend" style="margin-top:8px;">
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--accent);background:rgba(56,189,248,0.2);"></div> Currently processing</div>
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--accent2);background:rgba(129,140,248,0.2);"></div> On stack</div>
+          <div class="legend-item"><div class="legend-box" style="border-color:var(--accent3);background:rgba(52,211,153,0.15);"></div> Visited</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0;">
+          <div style="background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;">
+            <div style="font-family:'Space Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:2px;color:var(--accent2);margin-bottom:6px;">Stack (LIFO) — top → bottom</div>
+            <div id="dfs-stack-vis" style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;min-height:32px;"></div>
+          </div>
+          <div style="background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;">
+            <div style="font-family:'Space Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:2px;color:var(--accent3);margin-bottom:6px;">Visited (processed)</div>
+            <div id="dfs-visited-vis" style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;min-height:32px;"></div>
+          </div>
+        </div>
+        <div class="demo-controls">
+          <button class="btn btn-prev" id="dfs-prev" onclick="dfsStep(-1)" disabled>◀ Prev</button>
+          <button class="btn btn-next" id="dfs-next" onclick="dfsStep(1)">Next ▶</button>
+          <button class="btn btn-reset" onclick="dfsReset()">↺ Reset</button>
+          <span class="step-counter" id="dfs-counter">Step 0 / ?</span>
+        </div>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">BFS vs DFS</div>
+        BFS and DFS can sometimes produce the same traversal order (e.g., on a linear graph). Both visit all reachable vertices in Θ(V+E) time. The traversal ORDER may differ.
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- SHORTEST PATH -->
+    <!-- ================================================ -->
+    <section class="section" id="shortest-path">
+      <div class="section-title"><span class="icon">🛤️</span> Shortest Path (Unweighted)</div>
+      <div class="section-divider"></div>
+
+      <p><strong>Goal:</strong> Find the path with the fewest edges from source <em>s</em> to target <em>t</em> in an unweighted graph. This is essentially BFS.</p>
+
+      <div class="card card-accent">
+        <div style="font-weight:700;color:var(--accent);margin-bottom:8px;">Algorithm</div>
+        <p>1. Assign all vertices distance ∞, predecessor NULL</p>
+        <p>2. Set d[s] = 0, enqueue s</p>
+        <p>3. While queue is not empty: dequeue x; for each unvisited neighbor y: set d[y] = d[x]+1, pred[y]=x, enqueue y</p>
+        <p>4. Stop when t gets a distance. Follow predecessors backward to reconstruct path.</p>
+        <div class="math-block">Time: Θ(V + E)   Space: Θ(V)</div>
+        <div style="margin-top:12px;padding:10px 14px;background:var(--code-bg);border:1px solid var(--border);border-radius:8px;">
+          <div style="font-family:'Space Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:2px;color:var(--accent2);margin-bottom:8px;">Queue state example — finding path from 0 to 5</div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-family:'Space Mono',monospace;font-size:0.78rem;">
+            <div><span style="color:var(--text-muted);width:90px;display:inline-block;">Start:</span> <span style="color:var(--accent2);">Queue: [0]</span> &nbsp; d=[0,∞,∞,∞,∞,∞]</div>
+            <div><span style="color:var(--text-muted);width:90px;display:inline-block;">Dequeue 0:</span> <span style="color:var(--accent2);">Queue: [1,2]</span> &nbsp; d=[0,1,1,∞,∞,∞]</div>
+            <div><span style="color:var(--text-muted);width:90px;display:inline-block;">Dequeue 1:</span> <span style="color:var(--accent2);">Queue: [2,3,4]</span> &nbsp; d=[0,1,1,2,2,∞]</div>
+            <div><span style="color:var(--text-muted);width:90px;display:inline-block;">Dequeue 2:</span> <span style="color:var(--accent2);">Queue: [3,4]</span> &nbsp; (neighbors already seen)</div>
+            <div><span style="color:var(--text-muted);width:90px;display:inline-block;">Dequeue 3:</span> <span style="color:var(--accent2);">Queue: [4,5]</span> &nbsp; d=[0,1,1,2,2,3] ← found 5!</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- DIJKSTRA -->
+    <!-- ================================================ -->
+    <section class="section" id="dijkstra">
+      <div class="section-title"><span class="icon">🗺️</span> Dijkstra's Algorithm</div>
+      <div class="section-divider"></div>
+
+      <div class="grid-2">
+        <div>
+          <p><strong>Goal:</strong> Find minimum-weight path from source <em>s</em> to all other vertices in a weighted (non-negative weights!) graph.</p>
+          <p style="margin-top:8px;"><strong>Output:</strong> A shortest-path tree rooted at s.</p>
+          <div class="card card-accent" style="margin-top:12px;">
+            <table class="tbl">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Rudimentary Time</td><td class="ok">Θ(V²)</td></tr>
+              <tr><td>Elegant (min-heap)</td><td class="good">Θ((V+E) log V)</td></tr>
+            </table>
+          </div>
+          <div class="warn" style="margin-top:8px;"><div class="warn-label">⚠️ Negative Weights</div>Dijkstra does NOT work with negative edge weights. Use Bellman-Ford instead.</div>
+        </div>
+        <div>
+          <div class="code-block"><span class="fn">Dijkstra</span>(G, s):
+  S = {}          <span class="cm"># visited set</span>
+  d = [∞, ∞, ..., ∞]
+  d[s] = 0
+  p = [NULL, ...]  <span class="cm"># predecessors</span>
+  
+  <span class="kw">repeat</span> V times:
+    x = vertex <span class="kw">not</span> <span class="kw">in</span> S
+        <span class="kw">with</span> minimum d[x]
+    add x <span class="kw">to</span> S
+    <span class="kw">for</span> y adjacent <span class="kw">to</span> x:
+      <span class="kw">if</span> d[x] + w(x,y) < d[y]:
+        d[y] = d[x] + w(x,y)
+        p[y] = x</div>
+        </div>
+      </div>
+
+      <!-- Dijkstra Interactive -->
+      <div class="algo-demo">
+        <div class="algo-demo-title">▶ Interactive Demo — Dijkstra's Algorithm from Node 0</div>
+        <div class="step-info" id="dijk-info">Press Next to begin. Finding shortest paths from node 0.</div>
+        <svg id="dijk-svg" class="graph-canvas" viewBox="0 0 500 280" style="max-width:100%;height:300px;"></svg>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0;">
+          <div style="background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;">
+            <div style="font-family:'Space Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:2px;color:var(--accent3);margin-bottom:6px;">S — Finalized vertices</div>
+            <div id="dijk-s-vis" style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;min-height:32px;"></div>
+          </div>
+          <div style="background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;">
+            <div style="font-family:'Space Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:2px;color:var(--accent2);margin-bottom:6px;">Unvisited — sorted by d[ ] (min first)</div>
+            <div id="dijk-pq-vis" style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;min-height:32px;"></div>
+          </div>
+        </div>
+        <div style="font-family:'Space Mono',monospace;font-size:0.78rem;color:var(--text-muted);margin:4px 0 8px;" id="dijk-dist-disp"></div>
+        <div class="demo-controls">
+          <button class="btn btn-prev" id="dijk-prev" onclick="dijkStep(-1)" disabled>◀ Prev</button>
+          <button class="btn btn-next" id="dijk-next" onclick="dijkStep(1)">Next ▶</button>
+          <button class="btn btn-reset" onclick="dijkReset()">↺ Reset</button>
+          <span class="step-counter" id="dijk-counter">Step 0 / ?</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- FLOYD -->
+    <!-- ================================================ -->
+    <section class="section" id="floyd">
+      <div class="section-title"><span class="icon">🔳</span> Floyd's Algorithm</div>
+      <div class="section-divider"></div>
+
+      <div class="grid-2">
+        <div>
+          <p><strong>Goal:</strong> Find shortest paths between ALL pairs of vertices in a directed, weighted graph. Allows negative weights (but no negative cycles).</p>
+          <div class="card card-purple" style="margin-top:12px;">
+            <table class="tbl">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Time</td><td class="ok">Θ(V³)</td></tr>
+              <tr><td>Space</td><td class="ok">Θ(V²)</td></tr>
+              <tr><td>Negative weights?</td><td class="good">YES ✓ (no negative cycles)</td></tr>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="code-block"><span class="cm"># Initialize D as adjacency matrix</span>
+<span class="cm"># D[i][j] = ∞ if no direct edge</span>
+<span class="cm"># D[i][i] = 0</span>
+
+<span class="kw">for</span> k = 1 <span class="kw">to</span> V:   <span class="cm"># pass-by-k</span>
+  <span class="kw">for</span> i = 1 <span class="kw">to</span> V:
+    <span class="kw">for</span> j = 1 <span class="kw">to</span> V:
+      <span class="kw">if</span> D[i][k]+D[k][j] < D[i][j]:
+        D[i][j] = D[i][k]+D[k][j]</div>
+          <div class="tip" style="margin-top:8px;"><div class="tip-label">Interpretation</div>After "pass by k", D[i][j] = shortest path from i to j using only vertices 1..k as intermediaries.</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Worked Example</div>
+        <div class="card card-purple">
+          <p>Graph with 3 vertices. Initial adjacency matrix D:</p>
+          <div class="math-block" style="font-size:0.8rem;">D =  [0,   20,  ∞  ]
+     [∞,   0,   10 ]
+     [40,  80,   0  ]
+
+After Pass-by-1 (allow vertex 1 as intermediate):
+  D[3][2]: D[3][1]+D[1][2] = 40+20 = 60 < 80 → update!
+D =  [0,   20,  ∞  ]
+     [∞,   0,   10 ]
+     [40,  60,   0  ]
+
+After Pass-by-2 (allow vertex 2 as intermediate):
+  D[1][3]: D[1][2]+D[2][3] = 20+10 = 30 < ∞ → update!
+  D[3][3]: D[3][2]+D[2][3] = 60+10 = 70 > 0 → no update
+D =  [0,   20,  30 ]
+     [∞,   0,   10 ]
+     [40,  60,   0  ]</div>
+        </div>
+      </div>
+      <div class="exam-note"><div class="exam-label">🎯 Exam Focus</div>Floyd's is tested by giving you a partially-completed matrix and asking you to fill in values after a specific pass. Know which entries can change in each pass.</div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- SPANNING TREES -->
+    <!-- ================================================ -->
+    <section class="section" id="spanning">
+      <div class="section-title"><span class="icon">🌲</span> Minimum Spanning Trees</div>
+      <div class="section-divider"></div>
+
+      <p>A <strong>Minimum Spanning Tree (MST)</strong> is a spanning subgraph (connects all vertices) that is a tree (no cycles) with minimum total edge weight. Every connected graph has at least one MST.</p>
+
+      <div class="grid-2">
+        <!-- PRIM'S -->
+        <div class="subsection">
+          <div class="subsection-title">Prim's Algorithm</div>
+          <p><strong>Idea:</strong> Grow the MST one edge at a time. Start from any vertex, always add the cheapest edge that connects a new vertex to the growing tree.</p>
+          <div class="code-block"><span class="fn">Prim</span>(G, start):
+  T = {start}
+  <span class="kw">repeat</span> until T has V vertices:
+    Find cheapest edge (u,v)
+      where u ∈ T, v ∉ T
+    Add v <span class="kw">to</span> T, add edge (u,v)</div>
+          <div class="card card-green" style="margin-top:8px;">
+            <table class="tbl">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Time (basic)</td><td class="ok">Θ(V²)</td></tr>
+              <tr><td>Like Dijkstra?</td><td>Very similar!</td></tr>
+              <tr><td>Result</td><td>One MST from start</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- KRUSKAL'S -->
+        <div class="subsection">
+          <div class="subsection-title">Kruskal's Algorithm</div>
+          <p><strong>Idea:</strong> Sort all edges by weight. Add edges in order, skipping any that would create a cycle.</p>
+          <div class="code-block"><span class="fn">Kruskal</span>(G):
+  Sort edges by weight
+  MST = {}
+  <span class="kw">for</span> each edge (u,v) <span class="kw">in</span> sorted order:
+    <span class="kw">if</span> adding (u,v) doesn't create cycle:
+      add (u,v) <span class="kw">to</span> MST</div>
+          <div class="card card-green" style="margin-top:8px;">
+            <table class="tbl">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Time</td><td class="good">Θ(E log V)</td></tr>
+              <tr><td>Uses Union-Find?</td><td>YES for cycle detection</td></tr>
+              <tr><td>Result</td><td>One MST (global view)</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-accent" style="margin-top:16px;">
+        <strong>Both produce a valid MST</strong> — they may produce different trees if multiple edges have the same weight, but the total weight is always the same minimum value.
+      </div>
+
+      <!-- Spanning Tree Interactive -->
+      <div class="algo-demo">
+        <div class="algo-demo-title">▶ Interactive Demo — Prim's Algorithm</div>
+        <div class="step-info" id="prim-info">Press Next to build MST using Prim's algorithm starting from vertex 0.</div>
+        <svg id="prim-svg" class="graph-canvas" viewBox="0 0 500 280" style="max-width:100%;height:300px;"></svg>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0;">
+          <div style="background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;">
+            <div style="font-family:'Space Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:2px;color:var(--accent3);margin-bottom:6px;">T — Vertices in MST so far</div>
+            <div id="prim-t-vis" style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;min-height:32px;"></div>
+          </div>
+          <div style="background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;">
+            <div style="font-family:'Space Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:2px;color:var(--warning);margin-bottom:6px;">Frontier edges — cheapest first</div>
+            <div id="prim-frontier-vis" style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;min-height:32px;font-family:'Space Mono',monospace;font-size:0.72rem;"></div>
+          </div>
+        </div>
+        <div style="font-family:'Space Mono',monospace;font-size:0.78rem;color:var(--text-muted);margin:4px 0 8px;" id="prim-cost-disp">MST Cost: 0</div>
+        <div class="demo-controls">
+          <button class="btn btn-prev" id="prim-prev" onclick="primStep(-1)" disabled>◀ Prev</button>
+          <button class="btn btn-next" id="prim-next" onclick="primStep(1)">Next ▶</button>
+          <button class="btn btn-reset" onclick="primReset()">↺ Reset</button>
+          <span class="step-counter" id="prim-counter">Step 0 / ?</span>
+        </div>
+      </div>
+
+      <div class="exam-note"><div class="exam-label">🎯 Exam Focus</div>Exams ask: list edges added in order (by weight) for Prim's and Kruskal's. Both Prim's and Kruskal's can produce the SAME spanning tree on some graphs. The tree Dijkstra produces is NOT necessarily an MST.</div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- HUFFMAN -->
+    <!-- ================================================ -->
+    <section class="section" id="huffman">
+      <div class="section-title"><span class="icon">🌳</span> Huffman Encoding</div>
+      <div class="section-divider"></div>
+
+      <p><strong>Goal:</strong> Compress data by assigning shorter bit codes to more frequent characters. Result is a <em>prefix code</em> (no code is a prefix of another).</p>
+
+      <div class="grid-2">
+        <div>
+          <div class="subsection-title">Algorithm (Greedy)</div>
+          <div class="code-block"><span class="cm"># Given characters with frequencies</span>
+1. Create leaf node for each char
+2. Put all nodes in min-priority queue
+   (ordered by frequency)
+3. <span class="kw">While</span> queue has > 1 node:
+   a. Extract 2 lowest-frequency nodes
+   b. Create new internal node
+      with freq = sum of both
+   c. Left child = lower freq
+      Right child = higher freq
+   d. Insert new node into queue
+4. Remaining node = Huffman tree root
+5. 0 = left, 1 = right</div>
+          <div class="card card-purple" style="margin-top:8px;">
+            <table class="tbl">
+              <tr><th>Step</th><th>Time</th></tr>
+              <tr><td>Build tree</td><td class="good">Θ(n log n)</td></tr>
+              <tr><td>Extract codes</td><td class="good">Θ(n)</td></tr>
+              <tr><td>Total</td><td class="good">Θ(n log n)</td></tr>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="subsection-title">Example: HELLOOOO</div>
+          <p>Frequencies: H=1, E=1, L=2, O=4</p>
+          <div class="math-block" style="font-size:0.78rem;">Step 1: {H:1, E:1, L:2, O:4}
+  Extract H(1), E(1) → merge: HE(2)
+  Queue: {HE:2, L:2, O:4}
+
+Step 2: {HE:2, L:2, O:4}
+  Extract HE(2), L(2) → merge: HEL(4)
+  Queue: {O:4, HEL:4}
+
+Step 3: {O:4, HEL:4}
+  Extract O(4), HEL(4) → root(8)
+
+Tree:
+       (8)
+      /   \
+    O(4)  HEL(4)
+          /    \
+       HE(2)   L(2)
+       / \
+    H(1) E(1)
+
+Codes: O=0, L=11, H=100, E=101</div>
+          <div class="tip" style="margin-top:8px;"><div class="tip-label">Non-Uniqueness</div>If multiple nodes have the same frequency, the tree may differ — but all valid trees are optimal.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- COIN CHANGING -->
+    <!-- ================================================ -->
+    <section class="section" id="coin">
+      <div class="section-title"><span class="icon">🪙</span> Coin Changing (Dynamic Programming)</div>
+      <div class="section-divider"></div>
+
+      <p><strong>Problem:</strong> Given coin denominations (always including 1¢) and an amount n, find the minimum number of coins to make n cents.</p>
+
+      <div class="grid-2">
+        <div>
+          <div class="subsection-title">Why Greedy Fails</div>
+          <p>Greedy (always use biggest coin) works for US coins but NOT in general. Example: coins = {1, 6, 11}, target = 16.</p>
+          <div class="math-block" style="font-size:0.82rem;">Greedy: 11 + 1 + 1 + 1 + 1 + 1 = 6 coins
+Optimal: 6 + 6 + 4 × ... wait
+Optimal: 6 + 6 + 1 + 1 + 1 + 1 = 6 coins
+Or: 11 + ... hmm
+Optimal: 6 + 6 + 4? No 4-cent coin.
+Actually: 6+6+1+1+1+1 = 6 vs 11+1+1+1+1+1 = 6
+Either way 6 for this example, but
+for target=12: Greedy=11+1=2, Optimal=6+6=2 ✓
+for target=13: Greedy=11+1+1=3, DP checks all.</div>
+        </div>
+        <div>
+          <div class="subsection-title">DP Algorithm</div>
+          <div class="code-block"><span class="cm"># A[n] = min coins to make n cents</span>
+A[0] = 0
+<span class="kw">for</span> n = 1 <span class="kw">to</span> MAX:
+  A[n] = ∞
+  <span class="kw">for</span> each coin c:
+    <span class="kw">if</span> c <= n:
+      A[n] = min(A[n], A[n-c]+1)
+
+Time: Θ(n × |coins|)
+Space: Θ(n)</div>
+          <div class="tip" style="margin-top:8px;"><div class="tip-label">Key Insight</div>A[n] = 1 + min over all coins c of A[n - c]. We build up from A[0] using previously computed values.</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Worked Example — Coins: {1, 6, 11}</div>
+        <div class="card card-orange">
+          <table class="tbl">
+            <tr><th>n</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>11</th><th>12</th><th>13</th></tr>
+            <tr><td>A[n]</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>1</td><td>2</td><td>1</td><td>2</td><td>3</td></tr>
+            <tr><td>Coin used</td><td>—</td><td>1¢</td><td>1¢</td><td>1¢</td><td>1¢</td><td>1¢</td><td>6¢</td><td>6¢</td><td>11¢</td><td>6¢</td><td>11¢</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="exam-note"><div class="exam-label">🎯 Exam Focus</div>Exams give you a partially filled DP table and ask you to: (1) complete entries, (2) determine which coins were used, (3) figure out the coin denominations from the pattern in A[n].</div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- MINIMAX -->
+    <!-- ================================================ -->
+    <section class="section" id="minimax">
+      <div class="section-title"><span class="icon">♟️</span> Minimax Algorithm</div>
+      <div class="section-divider"></div>
+
+      <div class="grid-2">
+        <div>
+          <p><strong>Context:</strong> Two-player zero-sum game. Player "Max" tries to maximize the game value; player "Min" tries to minimize it. Both play optimally.</p>
+          <div class="card card-purple" style="margin-top:12px;">
+            <table class="tbl">
+              <tr><th>Property</th><th>Value</th></tr>
+              <tr><td>Time</td><td class="bad">Θ(b^d)</td></tr>
+              <tr><td>b = branching factor</td><td></td></tr>
+              <tr><td>d = depth of tree</td><td></td></tr>
+            </table>
+          </div>
+          <div class="tip" style="margin-top:8px;"><div class="tip-label">Heuristic Function</div>For deep game trees, we don't traverse to leaves. Instead, cut off at depth d and evaluate positions using a heuristic function h() that estimates value.</div>
+        </div>
+        <div>
+          <div class="code-block"><span class="fn">Minimax</span>(node, isMaxPlayer):
+  <span class="kw">if</span> leaf(node):
+    <span class="kw">return</span> h(node)   <span class="cm"># heuristic</span>
+  
+  <span class="kw">if</span> isMaxPlayer:
+    best = -∞
+    <span class="kw">for</span> child <span class="kw">in</span> children(node):
+      val = <span class="fn">Minimax</span>(child, False)
+      best = max(best, val)
+    <span class="kw">return</span> best
+  <span class="kw">else</span>:
+    best = +∞
+    <span class="kw">for</span> child <span class="kw">in</span> children(node):
+      val = <span class="fn">Minimax</span>(child, True)
+      best = min(best, val)
+    <span class="kw">return</span> best</div>
+          <div class="tip" style="margin-top:8px;"><div class="tip-label">How to solve by hand</div>Label leaf nodes with values. Work bottom-up: at Max levels take max of children; at Min levels take min of children.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- P vs NP -->
+    <!-- ================================================ -->
+    <section class="section" id="np">
+      <div class="section-title"><span class="icon">🤔</span> P, NP, and Limitations</div>
+      <div class="section-divider"></div>
+
+      <div class="grid-2">
+        <div>
+          <div class="subsection-title">Key Classes</div>
+          <div class="card card-red">
+            <strong style="color:var(--accent3);">P (Polynomial Time)</strong>
+            <p style="font-size:0.88rem;margin-top:6px;">Problems solvable in O(n^k) time for some constant k. These are "efficiently solvable".</p>
+            <p style="font-size:0.85rem;color:var(--text-muted);margin-top:6px;">Examples: Sorting, shortest path, finding MST, binary search</p>
+          </div>
+          <div class="card card-red" style="margin-top:8px;">
+            <strong style="color:var(--warning);">NP (Nondeterministic Polynomial)</strong>
+            <p style="font-size:0.88rem;margin-top:6px;">Problems where a proposed solution can be <em>verified</em> in polynomial time, even if finding one is hard.</p>
+            <p style="font-size:0.85rem;color:var(--text-muted);margin-top:6px;">Examples: Satisfiability (SAT), Traveling Salesman, Vertex Cover</p>
+          </div>
+          <div class="tip" style="margin-top:8px;"><div class="tip-label">P ⊆ NP</div>Everything in P is also in NP (if you can solve it quickly, you can certainly verify quickly). The famous open question: is P = NP?</div>
+        </div>
+        <div>
+          <div class="np-diagram">
+            <div class="np-outer">
+              <span class="np-label-outer">NP</span>
+              <span class="np-items-outer" style="font-size:0.65rem;">SAT<br>TSP<br>Vertex<br>Cover</span>
+              <div class="np-inner">
+                <span class="np-label-inner">P</span>
+                <div class="np-items-inner">Sorting<br>MST<br>Shortest<br>Path<br>BFS/DFS</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Decision Problems</div>
+        <p>A <strong>decision problem</strong> has a YES or NO answer. Examples:</p>
+        <div class="grid-2">
+          <div class="card card-green">
+            <strong>Decision Problems:</strong>
+            <ul style="margin-left:16px;margin-top:6px;font-size:0.85rem;">
+              <li>"Is there a path from A to B?" ← YES/NO</li>
+              <li>"Does the list have a duplicate?" ← YES/NO</li>
+              <li>"Is this graph 3-colorable?" ← YES/NO</li>
+            </ul>
+          </div>
+          <div class="card card-red">
+            <strong>NOT Decision Problems:</strong>
+            <ul style="margin-left:16px;margin-top:6px;font-size:0.85rem;">
+              <li>"What is the shortest path?" ← returns value</li>
+              <li>"Sort this list." ← returns sorted list</li>
+              <li>"What will your grade be?" ← returns grade (exam trap!)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">NP-Completeness Key Facts</div>
+        <div class="card card-red">
+          <ul style="margin-left:16px;">
+            <li>An NP-Complete problem is both in NP AND as hard as any problem in NP</li>
+            <li>If ANY NP-Complete problem can be solved in polynomial time, then P = NP</li>
+            <li>Finding MST of a connected graph IS in P (Prim's or Kruskal's are polynomial)</li>
+            <li>Vertex Cover IS in NP — a proposed cover can be verified in polynomial time</li>
+            <li>If a problem is in P, it IS solvable in O(log n) for some instances, but not necessarily all</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exam-note"><div class="exam-label">🎯 Exam Focus</div>True/False questions on P/NP: "If a problem is in NP, it cannot be solved in O(log n)" is FALSE (P ⊆ NP, and P problems can be solved in polynomial or even log time). "Finding MST is in NP but not in P" is FALSE — MST is in P. Know what a decision problem is.</div>
+    </section>
+
+    <!-- ================================================ -->
+    <!-- BIG CHEAT SHEET -->
+    <!-- ================================================ -->
+    <section class="section" id="cheatsheet">
+      <div class="section-title"><span class="icon">📋</span> Quick Reference Cheat Sheet</div>
+      <div class="section-divider"></div>
+
+      <div class="subsection">
+        <div class="subsection-title">All Sorting Algorithms</div>
+        <div class="card">
+          <table class="tbl">
+            <tr><th>Algorithm</th><th>Best Case</th><th>Worst Case</th><th>Space</th><th>Stable</th><th>In-Place</th></tr>
+            <tr><td>Bubble Sort</td><td class="bad">Θ(n²)</td><td class="bad">Θ(n²)</td><td class="good">Θ(1)</td><td class="good">YES</td><td class="good">YES</td></tr>
+            <tr><td>Selection Sort</td><td class="bad">Θ(n²)</td><td class="bad">Θ(n²)</td><td class="good">Θ(1)</td><td class="bad">NO</td><td class="good">YES</td></tr>
+            <tr><td>Insertion Sort</td><td class="good">Θ(n)</td><td class="bad">Θ(n²)</td><td class="good">Θ(1)</td><td class="good">YES</td><td class="good">YES</td></tr>
+            <tr><td>Merge Sort</td><td class="good">Θ(n log n)</td><td class="good">Θ(n log n)</td><td class="bad">Θ(n)</td><td class="good">YES</td><td class="bad">NO</td></tr>
+            <tr><td>Quick Sort</td><td class="good">Θ(n log n)</td><td class="bad">Θ(n²)</td><td class="ok">Θ(log n)</td><td class="bad">NO</td><td class="good">YES</td></tr>
+            <tr><td>Heap Sort</td><td class="good">Θ(n log n)</td><td class="good">Θ(n log n)</td><td class="good">Θ(1)</td><td class="bad">NO</td><td class="good">YES</td></tr>
+            <tr><td>Counting Sort</td><td class="good">Θ(n+k)</td><td class="good">Θ(n+k)</td><td class="bad">Θ(n+k)</td><td class="good">YES</td><td class="bad">NO</td></tr>
+            <tr><td>Radix Sort</td><td class="good">Θ(d(n+b))</td><td class="good">Θ(d(n+b))</td><td class="bad">Θ(n+b)</td><td class="good">YES*</td><td class="bad">NO</td></tr>
+          </table>
+          <p style="font-size:0.78rem;color:var(--text-muted);margin-top:8px;">*Radix stable if using stable sort at each pass | k = max value | d = digits | b = base</p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Graph Algorithms</div>
+        <div class="card">
+          <table class="tbl">
+            <tr><th>Algorithm</th><th>Time</th><th>Space</th><th>Purpose</th><th>Notes</th></tr>
+            <tr><td>BFS</td><td class="good">Θ(V+E)</td><td class="good">Θ(V)</td><td>Traverse / shortest hops</td><td>Uses Queue</td></tr>
+            <tr><td>DFS</td><td class="good">Θ(V+E)</td><td class="good">Θ(V)</td><td>Traverse / cycle detect</td><td>Uses Stack/recursion</td></tr>
+            <tr><td>Shortest Path (unweighted)</td><td class="good">Θ(V+E)</td><td class="good">Θ(V)</td><td>Min hop count</td><td>BFS-based</td></tr>
+            <tr><td>Dijkstra's</td><td class="ok">Θ(V²) or Θ((V+E)log V)</td><td class="good">Θ(V)</td><td>Min weight path from s</td><td>No negative weights!</td></tr>
+            <tr><td>Floyd's</td><td class="bad">Θ(V³)</td><td class="ok">Θ(V²)</td><td>All-pairs shortest path</td><td>Allows negative weights</td></tr>
+            <tr><td>Prim's</td><td class="ok">Θ(V²)</td><td class="good">Θ(V)</td><td>MST from vertex</td><td>Similar to Dijkstra</td></tr>
+            <tr><td>Kruskal's</td><td class="good">Θ(E log V)</td><td class="good">Θ(V)</td><td>MST globally</td><td>Sort edges first</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Master Theorem Quick Reference</div>
+        <div class="card card-accent">
+          <div class="math-block">T(n) = aT(n/b) + f(n)   →  compute c* = log_b(a)
+
+if f(n) = O(n^c) and c* > c:     T(n) = Θ(n^c*)
+if f(n) = Θ(n^c) and c* = c:     T(n) = Θ(n^c* · log n)
+if f(n) = Θ(n^c·log^k n) and c*=c: T(n) = Θ(n^c* · log^(k+1) n)
+if f(n) = Ω(n^c) and c* < c:     T(n) = Θ(f(n))</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Common True/False Traps from Past Exams</div>
+        <div class="card">
+          <table class="tbl">
+            <tr><th>Statement</th><th>T/F</th><th>Reason</th></tr>
+            <tr><td>2n + 1000n³ + 10n² + 8 = Θ(2n)</td><td class="good">TRUE</td><td>Exponential 2ⁿ dominates all polynomials</td></tr>
+            <tr><td>Kadane's is faster than D&C for MCS</td><td class="good">TRUE</td><td>Θ(n) vs Θ(n log n)</td></tr>
+            <tr><td>Binary Tree Sort is Θ(n) worst case</td><td class="bad">FALSE</td><td>BST can degenerate to Θ(n²)</td></tr>
+            <tr><td>Counting sort is always Θ(n)</td><td class="bad">FALSE</td><td>It's Θ(n+k), not just Θ(n)</td></tr>
+            <tr><td>If f(n) = O(n²) then f(n) = Ω(n)</td><td class="bad">FALSE</td><td>f(n) = O(n²) says nothing about lower bound</td></tr>
+            <tr><td>Radix + Counting Sort is linear</td><td class="bad">FALSE</td><td>Each pass is Θ(n+b), d passes = Θ(d(n+b))</td></tr>
+            <tr><td>Kadane's doesn't work on negative lists</td><td class="bad">FALSE</td><td>It works fine — answer may be negative</td></tr>
+            <tr><td>Selection sort is stable</td><td class="bad">FALSE</td><td>Swapping can skip over equal elements</td></tr>
+            <tr><td>Merge sort has same time in best and worst</td><td class="good">TRUE</td><td>Always Θ(n log n)</td></tr>
+            <tr><td>Θ(lg n) = Θ(ln n)</td><td class="good">TRUE</td><td>Log bases differ only by constant</td></tr>
+            <tr><td>Θ(2ⁿ) = Θ(3ⁿ)</td><td class="bad">FALSE</td><td>Exponential bases DO matter</td></tr>
+            <tr><td>BFT and DFT can yield same traversal</td><td class="good">TRUE</td><td>On linear graphs, they produce same order</td></tr>
+            <tr><td>Prim's and Kruskal's have same goal</td><td class="good">TRUE</td><td>Both find a minimum spanning tree</td></tr>
+            <tr><td>Dijkstra never includes highest-weight edge</td><td class="bad">FALSE</td><td>Dijkstra may include it if it's on the shortest path</td></tr>
+            <tr><td>Finding MST is in NP but not P</td><td class="bad">FALSE</td><td>Prim's/Kruskal's are polynomial — MST is in P</td></tr>
+            <tr><td>"What will your grade be?" is a decision problem</td><td class="bad">FALSE</td><td>Decision problems answer YES/NO only</td></tr>
+            <tr><td>Karatsuba is always faster than schoolbook</td><td class="bad">FALSE</td><td>For small n, schoolbook can be faster</td></tr>
+            <tr><td>Binary search works for any target in any list</td><td class="bad">FALSE</td><td>List must be SORTED first</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+// ============================================================
+// UTILITY FUNCTIONS
+// ============================================================
+function toggleCollapsible(header) {
+  const content = header.nextElementSibling;
+  const chevron = header.querySelector('.chevron');
+  content.classList.toggle('open');
+  chevron.classList.toggle('open');
+}
+
+function renderArray(containerId, arr, states) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+  arr.forEach((val, i) => {
+    const cell = document.createElement('div');
+    cell.className = 'arr-cell';
+    const box = document.createElement('div');
+    box.className = 'arr-val' + (states && states[i] ? ' ' + states[i] : '');
+    box.textContent = val;
+    const idx = document.createElement('div');
+    idx.className = 'arr-idx';
+    idx.textContent = i;
+    cell.appendChild(box);
+    cell.appendChild(idx);
+    container.appendChild(cell);
+  });
+}
+
+function updateControls(prev, next, counter, step, total) {
+  document.getElementById(prev).disabled = step <= 0;
+  document.getElementById(next).disabled = step >= total;
+  document.getElementById(counter).textContent = `Step ${step} / ${total}`;
+}
+
+// ============================================================
+// BUBBLE SORT DEMO
+// ============================================================
+let bubbleSteps = [];
+let bubbleCurrent = 0;
+
+function generateBubbleSteps() {
+  const A = [8, 4, 3, 4, 1];
+  bubbleSteps = [];
+  bubbleSteps.push({ arr: [...A], states: {}, info: 'Starting array. Press Next to begin.' });
+  const arr = [...A];
+  const n = arr.length;
+  for (let i = 0; i <= n-2; i++) {
+    for (let j = 0; j <= n-i-2; j++) {
+      // Compare
+      const s1 = {}; s1[j] = 'comparing'; s1[j+1] = 'comparing';
+      for (let k = n-i; k < n; k++) s1[k] = 'sorted';
+      bubbleSteps.push({ arr: [...arr], states: s1, info: `Pass ${i+1}: Comparing A[${j}]=${arr[j]} and A[${j+1}]=${arr[j+1]}` });
+      if (arr[j] > arr[j+1]) {
+        [arr[j], arr[j+1]] = [arr[j+1], arr[j]];
+        const s2 = {}; s2[j] = 'swapping'; s2[j+1] = 'swapping';
+        for (let k = n-i; k < n; k++) s2[k] = 'sorted';
+        bubbleSteps.push({ arr: [...arr], states: s2, info: `Swapped! A[${j}]=${arr[j]} and A[${j+1}]=${arr[j+1]}` });
+      }
+    }
+    const sf = {}; for (let k = n-i-1; k < n; k++) sf[k] = 'sorted';
+    bubbleSteps.push({ arr: [...arr], states: sf, info: `Pass ${i+1} complete. Last ${i+1} element(s) sorted.` });
+  }
+  const sfinal = {}; for (let k = 0; k < n; k++) sfinal[k] = 'sorted';
+  bubbleSteps.push({ arr: [...arr], states: sfinal, info: '✅ Array fully sorted!' });
+}
+
+function bubbleStep(dir) {
+  bubbleCurrent = Math.max(0, Math.min(bubbleSteps.length-1, bubbleCurrent + dir));
+  const s = bubbleSteps[bubbleCurrent];
+  renderArray('bubble-array', s.arr, s.states);
+  document.getElementById('bubble-info').innerHTML = s.info;
+  updateControls('bubble-prev', 'bubble-next', 'bubble-counter', bubbleCurrent, bubbleSteps.length-1);
+}
+
+function bubbleReset() {
+  bubbleCurrent = 0;
+  const s = bubbleSteps[0];
+  renderArray('bubble-array', s.arr, s.states);
+  document.getElementById('bubble-info').innerHTML = s.info;
+  updateControls('bubble-prev', 'bubble-next', 'bubble-counter', 0, bubbleSteps.length-1);
+}
+
+// ============================================================
+// SELECTION SORT DEMO
+// ============================================================
+let selSteps = [], selCurrent = 0;
+
+function generateSelSteps() {
+  const A = [4, 3, 1, 8, 3];
+  selSteps = [];
+  selSteps.push({ arr: [...A], states: {}, info: 'Starting array. Press Next to begin.' });
+  const arr = [...A];
+  const n = arr.length;
+  for (let i = 0; i < n-1; i++) {
+    let minIdx = i;
+    const s0 = {}; s0[i] = 'current'; for (let k=0;k<i;k++) s0[k]='sorted';
+    selSteps.push({ arr:[...arr], states:s0, info:`Round ${i+1}: Finding minimum in positions ${i} to ${n-1}.` });
+    for (let j = i+1; j < n; j++) {
+      const s1 = {};
+      for (let k=0;k<i;k++) s1[k]='sorted';
+      s1[i] = 'current'; s1[minIdx] = 'comparing'; s1[j] = 'comparing';
+      selSteps.push({ arr:[...arr], states:s1, info:`Comparing A[${j}]=${arr[j]} with current min A[${minIdx}]=${arr[minIdx]}` });
+      if (arr[j] < arr[minIdx]) { minIdx = j; }
+    }
+    if (minIdx !== i) {
+      const s2 = {}; s2[i]='swapping'; s2[minIdx]='swapping'; for(let k=0;k<i;k++) s2[k]='sorted';
+      selSteps.push({ arr:[...arr], states:s2, info:`Swapping A[${i}]=${arr[i]} with minimum A[${minIdx}]=${arr[minIdx]}` });
+      [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];
+    }
+    const s3 = {}; for(let k=0;k<=i;k++) s3[k]='sorted';
+    selSteps.push({ arr:[...arr], states:s3, info:`Round ${i+1} done. A[0..${i}] sorted.` });
+  }
+  const sf = {}; for(let k=0;k<n;k++) sf[k]='sorted';
+  selSteps.push({ arr:[...arr], states:sf, info:'✅ Array fully sorted!' });
+}
+
+function selStep(dir) {
+  selCurrent = Math.max(0, Math.min(selSteps.length-1, selCurrent+dir));
+  const s = selSteps[selCurrent];
+  renderArray('sel-array', s.arr, s.states);
+  document.getElementById('sel-info').innerHTML = s.info;
+  updateControls('sel-prev', 'sel-next', 'sel-counter', selCurrent, selSteps.length-1);
+}
+function selReset() { selCurrent=0; selStep(0); }
+
+// ============================================================
+// INSERTION SORT DEMO
+// ============================================================
+let insSteps = [], insCurrent = 0;
+
+function generateInsSteps() {
+  const A = [4, 3, 1, 8, 3];
+  insSteps = [];
+  insSteps.push({ arr:[...A], states:{}, info:'Starting array. Press Next to begin.' });
+  const arr = [...A];
+  const n = arr.length;
+  const s0 = {0:'sorted'};
+  insSteps.push({ arr:[...arr], states:s0, info:'A[0]=4 is trivially in sorted position.' });
+  for (let i = 1; i < n; i++) {
+    const key = arr[i];
+    let j = i - 1;
+    const s1 = {}; s1[i]='pivot'; for(let k=0;k<i;k++) s1[k]='sorted';
+    insSteps.push({ arr:[...arr], states:s1, info:`Inserting key = A[${i}] = ${key} into sorted region A[0..${i-1}].` });
+    while (j >= 0 && arr[j] > key) {
+      arr[j+1] = arr[j];
+      const s2 = {}; s2[j+1]='comparing'; s2[j]='comparing'; for(let k=0;k<j;k++) s2[k]='sorted';
+      insSteps.push({ arr:[...arr], states:s2, info:`A[${j}]=${arr[j]} > ${key}, shift right.` });
+      j--;
+    }
+    arr[j+1] = key;
+    const s3 = {}; for(let k=0;k<=i;k++) s3[k]='sorted';
+    insSteps.push({ arr:[...arr], states:s3, info:`Inserted ${key} at position ${j+1}. Sorted region is A[0..${i}].` });
+  }
+  const sf = {}; for(let k=0;k<n;k++) sf[k]='sorted';
+  insSteps.push({ arr:[...arr], states:sf, info:'✅ Array fully sorted!' });
+}
+
+function insStep(dir) {
+  insCurrent = Math.max(0, Math.min(insSteps.length-1, insCurrent+dir));
+  const s = insSteps[insCurrent];
+  renderArray('ins-array', s.arr, s.states);
+  document.getElementById('ins-info').innerHTML = s.info;
+  updateControls('ins-prev', 'ins-next', 'ins-counter', insCurrent, insSteps.length-1);
+}
+function insReset() { insCurrent=0; insStep(0); }
+
+// ============================================================
+// MERGE SORT DEMO (Merge step only)
+// ============================================================
+let mergeSteps = [], mergeCurrent = 0;
+
+function generateMergeSteps() {
+  mergeSteps = [];
+  const left = [0, 1, 3, 7, 8];
+  const right = [2, 4, 5, 6, 8, 9];
+  let li = 0, ri = 0;
+  const result = [];
+
+  function renderMerge(l, r, res, li, ri, highlight='') {
+    let html = '';
+    html += `<div style="color:var(--accent);margin-bottom:4px;">Left half:  [${l.map((v,i) => i===li ? `<span style="color:var(--accent3);font-weight:700">${v}</span>` : v).join(', ')}]</div>`;
+    html += `<div style="color:var(--accent2);margin-bottom:4px;">Right half: [${r.map((v,i) => i===ri ? `<span style="color:var(--accent3);font-weight:700">${v}</span>` : v).join(', ')}]</div>`;
+    html += `<div style="color:var(--accent3);">Merged so far: [${res.join(', ')}] ${highlight}</div>`;
+    return html;
+  }
+
+  mergeSteps.push({ html: renderMerge(left, right, [], 0, 0, ''), info: 'Two sorted halves ready to merge. Press Next.' });
+
+  while (li < left.length && ri < right.length) {
+    if (left[li] <= right[ri]) {
+      result.push(left[li]);
+      mergeSteps.push({ html: renderMerge(left, right, [...result], li+1, ri, `← took ${left[li]} from left`), info: `Left[${li}]=${left[li]} ≤ Right[${ri}]=${right[ri]}: take from left.` });
+      li++;
+    } else {
+      result.push(right[ri]);
+      mergeSteps.push({ html: renderMerge(left, right, [...result], li, ri+1, `← took ${right[ri]} from right`), info: `Left[${li}]=${left[li]} > Right[${ri}]=${right[ri]}: take from right.` });
+      ri++;
+    }
+  }
+  while (li < left.length) { result.push(left[li]); mergeSteps.push({ html: renderMerge(left, right, [...result], li+1, ri, `← appended remaining left`), info: `Appended remaining left element ${left[li]}.` }); li++; }
+  while (ri < right.length) { result.push(right[ri]); mergeSteps.push({ html: renderMerge(left, right, [...result], li, ri+1, `← appended remaining right`), info: `Appended remaining right element ${right[ri]}.` }); ri++; }
+  mergeSteps.push({ html: `<div style="color:var(--accent3);font-size:1rem;">✅ Merged result: [${result.join(', ')}]</div>`, info: 'Merge complete! The combined array is sorted.' });
+}
+
+function mergeStep(dir) {
+  mergeCurrent = Math.max(0, Math.min(mergeSteps.length-1, mergeCurrent+dir));
+  const s = mergeSteps[mergeCurrent];
+  document.getElementById('merge-vis').innerHTML = s.html;
+  document.getElementById('merge-info').innerHTML = s.info;
+  updateControls('merge-prev', 'merge-next', 'merge-counter', mergeCurrent, mergeSteps.length-1);
+}
+function mergeReset() { mergeCurrent=0; mergeStep(0); }
+
+// ============================================================
+// QUICKSORT PARTITION DEMO
+// ============================================================
+let qsSteps = [], qsCurrent = 0;
+
+function generateQSSteps() {
+  qsSteps = [];
+  const origArr = [50, 30, 10, 20, 5, 18, 18, 25];
+  const arr = [...origArr];
+  const n = arr.length;
+  const pivot = arr[n-1];
+
+  qsSteps.push({ arr:[...arr], states:{[n-1]:'pivot'}, info:`Array: [${arr.join(', ')}]. Pivot = A[${n-1}] = ${pivot} (last element).` });
+
+  let i = -1;
+  for (let j = 0; j <= n-2; j++) {
+    const s1 = { [n-1]:'pivot' };
+    if (i >= 0) s1[i] = 'comparing';
+    s1[j] = 'current';
+    for (let k=0;k<i;k++) s1[k]='sorted';
+    qsSteps.push({ arr:[...arr], states:s1, info:`j=${j}: A[j]=${arr[j]} vs pivot=${pivot}. i=${i}. ${arr[j]<=pivot?'≤ pivot → will increment i and swap':'> pivot → skip'}` });
+    if (arr[j] <= pivot) {
+      i++;
+      if (i !== j) {
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+        const s2 = { [n-1]:'pivot', [i]:'swapping', [j]:'swapping' };
+        for (let k=0;k<i;k++) s2[k]='sorted';
+        qsSteps.push({ arr:[...arr], states:s2, info:`A[j]=${arr[j]}≤${pivot}: increment i to ${i}, swap A[${i}] and A[${j}]. ` });
+      } else {
+        const s2 = { [n-1]:'pivot', [i]:'sorted' };
+        for (let k=0;k<i;k++) s2[k]='sorted';
+        qsSteps.push({ arr:[...arr], states:s2, info:`A[j]=${arr[j]}≤${pivot}: increment i to ${i}. No swap needed (i=j).` });
+      }
+    }
+  }
+  // Place pivot
+  [arr[i+1], arr[n-1]] = [arr[n-1], arr[i+1]];
+  const sf = {}; sf[i+1]='pivot';
+  for(let k=0;k<=i;k++) sf[k]='sorted';
+  for(let k=i+2;k<n;k++) sf[k]='sorted';
+  qsSteps.push({ arr:[...arr], states:sf, info:`✅ Place pivot: swap A[${i+1}] and A[${n-1}]. Pivot ${pivot} is now at final position ${i+1}. Left: ≤${pivot}, Right: ≥${pivot}.` });
+}
+
+function qsStep(dir) {
+  qsCurrent = Math.max(0, Math.min(qsSteps.length-1, qsCurrent+dir));
+  const s = qsSteps[qsCurrent];
+  renderArray('qs-array', s.arr, s.states);
+  document.getElementById('qs-info').innerHTML = s.info;
+  updateControls('qs-prev', 'qs-next', 'qs-counter', qsCurrent, qsSteps.length-1);
+}
+function qsReset() { generateQSSteps(); qsCurrent=0; qsStep(0); }
+
+// ============================================================
+// HEAP SORT DEMO
+// ============================================================
+let heapSteps = [], heapCurrent = 0;
+
+function renderHeapTree(arr, highlighted, swapping, sorted) {
+  // arr is 1-indexed conceptually, stored 0-indexed
+  const container = document.getElementById('heap-tree');
+  if (!container) return;
+  container.innerHTML = '';
+  const n = arr.length;
+  // Levels: 0:[0], 1:[1,2], 2:[3,4,5,6]
+  const levels = [];
+  let start = 0, size = 1;
+  while (start < n) {
+    levels.push(arr.slice(start, Math.min(start+size, n)));
+    start += size; size *= 2;
+  }
+  // Track actual indices
+  let idx = 0;
+  levels.forEach((level, li) => {
+    const row = document.createElement('div');
+    row.className = 'heap-level';
+    level.forEach(val => {
+      const node = document.createElement('div');
+      node.className = 'heap-node';
+      if (sorted && sorted.includes(idx)) node.classList.add('sorted');
+      else if (swapping && swapping.includes(idx)) node.classList.add('swapping');
+      else if (highlighted && highlighted.includes(idx)) node.classList.add('highlighted');
+      node.textContent = val;
+      row.appendChild(node);
+      idx++;
+    });
+    container.appendChild(row);
+  });
+  document.getElementById('heap-array-disp').textContent = 'Array: [' + arr.join(', ') + ']';
+}
+
+function generateHeapSteps() {
+  heapSteps = [];
+  const A = [4, 10, 3, 5, 1, 9, 8]; // 0-indexed
+  const arr = [...A];
+  const n = arr.length;
+  heapSteps.push({ arr:[...arr], h:[], sw:[], so:[], info:'Starting array. Will build max heap bottom-up.' });
+
+  function maxHeapifySteps(a, i, size) {
+    const L = 2*i+1, R = 2*i+2;
+    let max = i;
+    if (L < size && a[L] > a[max]) max = L;
+    if (R < size && a[R] > a[max]) max = R;
+    heapSteps.push({ arr:[...a], h:[i,L<size?L:-1,R<size?R:-1].filter(x=>x>=0), sw:[], so:[], info:`MaxHeapify at i=${i}: val=${a[i]}, left=${L<size?a[L]:'N/A'}, right=${R<size?a[R]:'N/A'}. Max at index ${max}=${a[max]}.` });
+    if (max !== i) {
+      [a[i], a[max]] = [a[max], a[i]];
+      heapSteps.push({ arr:[...a], h:[], sw:[i,max], so:[], info:`Swapped A[${i}]=${a[i]} with A[${max}]=${a[max]}. Continue heapify at ${max}.` });
+      maxHeapifySteps(a, max, size);
+    }
+  }
+
+  // Build max heap: iterate from floor(n/2)-1 down to 0
+  for (let i = Math.floor(n/2)-1; i >= 0; i--) {
+    heapSteps.push({ arr:[...arr], h:[i], sw:[], so:[], info:`Call MaxHeapify on node at index ${i} (value=${arr[i]}).` });
+    maxHeapifySteps(arr, i, n);
+  }
+  heapSteps.push({ arr:[...arr], h:[], sw:[], so:[], info:'✅ Max heap built! Root = maximum element = ' + arr[0] });
+}
+
+function heapStep(dir) {
+  heapCurrent = Math.max(0, Math.min(heapSteps.length-1, heapCurrent+dir));
+  const s = heapSteps[heapCurrent];
+  renderHeapTree(s.arr, s.h, s.sw, s.so);
+  document.getElementById('heap-info').innerHTML = s.info;
+  updateControls('heap-prev', 'heap-next', 'heap-counter', heapCurrent, heapSteps.length-1);
+}
+function heapReset() { heapCurrent=0; heapStep(0); }
+
+// ============================================================
+// BINARY SEARCH DEMO
+// ============================================================
+let bsSteps = [], bsCurrent = 0;
+
+function generateBSSteps() {
+  bsSteps = [];
+  const arr = [0, 0, 4, 4, 6, 7, 8, 9, 9, 10, 12, 13, 13, 14, 14, 17, 18, 19, 19, 19];
+  const target = 17;
+  let L = 0, R = arr.length - 1;
+
+  bsSteps.push({ arr, states: arr.reduce((a,_,i)=>{a[i]='';return a;},{}), info:`Searching for target = ${target}. L=0, R=${R}.` });
+
+  while (L <= R) {
+    const C = Math.floor((L + R) / 2);
+    const states = {};
+    for (let k=0; k < arr.length; k++) {
+      if (k < L || k > R) states[k] = 'comparing'; // eliminated (dim)
+      else if (k === C) states[k] = 'current';
+      else states[k] = ''; // in range
+    }
+    bsSteps.push({ arr, states, info:`L=${L}, R=${R}: C=⌊(${L}+${R})/2⌋=${C}, A[${C}]=${arr[C]}. Compare with target=${target}.` });
+
+    if (arr[C] === target) {
+      const sf = {}; sf[C] = 'sorted';
+      bsSteps.push({ arr, states: sf, info:`✅ Found! A[${C}] = ${target}. Search complete.` });
+      return;
+    } else if (target < arr[C]) {
+      R = C - 1;
+      bsSteps.push({ arr, states, info:`${target} < A[${C}]=${arr[C]}: search left half. New R=${R}.` });
+    } else {
+      L = C + 1;
+      bsSteps.push({ arr, states, info:`${target} > A[${C}]=${arr[C]}: search right half. New L=${L}.` });
+    }
+  }
+  bsSteps.push({ arr, states:{}, info:`Target not found.` });
+}
+
+function bsStep(dir) {
+  bsCurrent = Math.max(0, Math.min(bsSteps.length-1, bsCurrent+dir));
+  const s = bsSteps[bsCurrent];
+  // For binary search, use custom render
+  const container = document.getElementById('bs-array');
+  container.innerHTML = '';
+  const n = s.arr.length;
+  // Show subarray compactly
+  s.arr.forEach((val, i) => {
+    const cell = document.createElement('div');
+    cell.className = 'arr-cell';
+    const box = document.createElement('div');
+    box.style.width = '32px'; box.style.height = '32px'; box.style.fontSize = '0.75rem';
+    box.className = 'arr-val';
+    const st = s.states[i];
+    if (st === 'comparing') { box.style.opacity='0.25'; box.style.borderColor='var(--border)'; }
+    else if (st === 'current') box.classList.add('current');
+    else if (st === 'sorted') box.classList.add('sorted');
+    else if (st === '') box.classList.add('pivot'); // in range
+    box.textContent = val;
+    const idx = document.createElement('div');
+    idx.className = 'arr-idx';
+    idx.textContent = i;
+    cell.appendChild(box);
+    cell.appendChild(idx);
+    container.appendChild(cell);
+  });
+  document.getElementById('bs-info').innerHTML = s.info;
+  updateControls('bs-prev', 'bs-next', 'bs-counter', bsCurrent, bsSteps.length-1);
+}
+function bsReset() { bsCurrent=0; bsStep(0); }
+
+// ============================================================
+// BFS DEMO (SVG Graph)
+// ============================================================
+const bfsGraph = {
+  nodes: [{id:0,x:80,y:140},{id:1,x:220,y:60},{id:2,x:220,y:220},{id:3,x:360,y:60},{id:4,x:360,y:220},{id:5,x:440,y:140}],
+  edges: [[0,1],[0,2],[1,3],[1,4],[2,4],[3,5],[4,5]]
+};
+let bfsSteps = [], bfsCurrent = 0;
+
+function initBFSSVG() {
+  const svg = document.getElementById('bfs-svg');
+  if (!svg) return;
+  svg.innerHTML = '';
+  // Draw edges
+  bfsGraph.edges.forEach(([a,b]) => {
+    const na = bfsGraph.nodes[a], nb = bfsGraph.nodes[b];
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1',na.x); line.setAttribute('y1',na.y);
+    line.setAttribute('x2',nb.x); line.setAttribute('y2',nb.y);
+    line.setAttribute('class','svg-graph-edge'); line.setAttribute('id',`bfs-e-${a}-${b}`);
+    svg.appendChild(line);
+  });
+  // Draw nodes
+  bfsGraph.nodes.forEach(n => {
+    const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',n.x); c.setAttribute('cy',n.y); c.setAttribute('r',22);
+    c.setAttribute('class','svg-graph-node'); c.setAttribute('id',`bfs-n-${n.id}`);
+    const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x',n.x); t.setAttribute('y',n.y);
+    t.setAttribute('class','node-label'); t.textContent = n.id;
+    g.appendChild(c); g.appendChild(t);
+    svg.appendChild(g);
+  });
+}
+
+function generateBFSSteps() {
+  bfsSteps = [];
+  const adj = {0:[1,2],1:[0,3,4],2:[0,4],3:[1,5],4:[1,2,5],5:[3,4]};
+  const visited = new Set(), queue = [];
+  const nodeStates = {}; // 'visited','current','queued'
+
+  bfsSteps.push({ ns:{}, qs:'[]', info:'Initial state. All nodes unvisited.' });
+
+  visited.add(0); queue.push(0); nodeStates[0]='queued';
+  bfsSteps.push({ ns:{...nodeStates}, qs:'[0]', info:'Start BFS from node 0. Mark 0 as visited, enqueue it.' });
+
+  while (queue.length > 0) {
+    const x = queue.shift();
+    const prevNs = {...nodeStates};
+    prevNs[x] = 'current';
+    bfsSteps.push({ ns:{...prevNs}, qs:'['+queue.join(',')+']', info:`Dequeue node ${x}. Process its neighbors.` });
+    nodeStates[x] = 'visited';
+
+    for (const y of adj[x]) {
+      if (!visited.has(y)) {
+        visited.add(y); queue.push(y);
+        nodeStates[y] = 'queued';
+        bfsSteps.push({ ns:{...nodeStates}, qs:'['+queue.join(',')+']', info:`Discover node ${y} from ${x}. Enqueue ${y}.` });
+      }
+    }
+  }
+  bfsSteps.push({ ns:{...nodeStates}, qs:'[]', info:'✅ BFS complete! All reachable nodes visited.' });
+}
+
+function renderNodePill(n, color) {
+  return `<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;border:2px solid ${color};font-family:'Space Mono',monospace;font-size:0.78rem;font-weight:700;color:${color};background:transparent;">${n}</span>`;
+}
+
+function applyBFSState(s) {
+  bfsGraph.nodes.forEach(n => {
+    const el = document.getElementById(`bfs-n-${n.id}`);
+    if (!el) return;
+    el.className.baseVal = 'svg-graph-node';
+    const st = s.ns[n.id];
+    if (st) el.classList.add(st);
+  });
+  // Render queue pills
+  const qArr = s.qs === '[]' ? [] : s.qs.replace('[','').replace(']','').split(',').filter(x=>x!=='');
+  const qVis = document.getElementById('bfs-queue-vis');
+  if (qVis) {
+    if (qArr.length === 0) {
+      qVis.innerHTML = '<span style="color:var(--text-muted);font-family:\'Space Mono\',monospace;font-size:0.75rem;">empty</span>';
+    } else {
+      qVis.innerHTML = qArr.map((n,i) => `${renderNodePill(n,'var(--accent2)')}${i<qArr.length-1?'<span style="color:var(--text-muted);font-size:0.7rem;margin:0 1px;">→</span>':''}`).join('');
+    }
+  }
+  // Render visited pills
+  const visited = Object.keys(s.ns).filter(k=>s.ns[k]==='visited' || s.ns[k]==='current');
+  const vVis = document.getElementById('bfs-visited-vis');
+  if (vVis) {
+    if (visited.length === 0) {
+      vVis.innerHTML = '<span style="color:var(--text-muted);font-family:\'Space Mono\',monospace;font-size:0.75rem;">none yet</span>';
+    } else {
+      vVis.innerHTML = visited.sort((a,b)=>a-b).map(n => renderNodePill(n,'var(--accent3)')).join('');
+    }
+  }
+  document.getElementById('bfs-info').innerHTML = s.info;
+}
+
+function bfsStep(dir) {
+  bfsCurrent = Math.max(0, Math.min(bfsSteps.length-1, bfsCurrent+dir));
+  applyBFSState(bfsSteps[bfsCurrent]);
+  updateControls('bfs-prev', 'bfs-next', 'bfs-counter', bfsCurrent, bfsSteps.length-1);
+}
+function bfsReset() { bfsCurrent=0; bfsStep(0); }
+
+// ============================================================
+// DFS DEMO (SVG + Stack display)
+// ============================================================
+const dfsGraph = {
+  nodes: [{id:0,x:80,y:140},{id:1,x:220,y:60},{id:2,x:220,y:220},{id:3,x:360,y:60},{id:4,x:360,y:220},{id:5,x:440,y:140}],
+  edges: [[0,1],[0,2],[1,3],[1,4],[2,4],[3,5],[4,5]]
+};
+let dfsSteps = [], dfsCurrent = 0;
+
+function initDFSSVG() {
+  const svg = document.getElementById('dfs-svg');
+  if (!svg) return;
+  svg.innerHTML = '';
+  dfsGraph.edges.forEach(([a,b]) => {
+    const na = dfsGraph.nodes[a], nb = dfsGraph.nodes[b];
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1',na.x); line.setAttribute('y1',na.y);
+    line.setAttribute('x2',nb.x); line.setAttribute('y2',nb.y);
+    line.setAttribute('class','svg-graph-edge');
+    svg.appendChild(line);
+  });
+  dfsGraph.nodes.forEach(n => {
+    const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',n.x); c.setAttribute('cy',n.y); c.setAttribute('r',22);
+    c.setAttribute('class','svg-graph-node'); c.setAttribute('id',`dfs-n-${n.id}`);
+    const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x',n.x); t.setAttribute('y',n.y);
+    t.setAttribute('class','node-label'); t.textContent = n.id;
+    g.appendChild(c); g.appendChild(t);
+    svg.appendChild(g);
+  });
+}
+
+function generateDFSSteps() {
+  dfsSteps = [];
+  const adj = {0:[2,1],1:[4,3,0],2:[4,0],3:[5,1],4:[5,2,1],5:[4,3]}; // reversed so stack pops in alphabetical order
+  const visited = new Set();
+  const nodeStates = {};
+
+  dfsSteps.push({ ns:{}, stack:[], visited:[], info:'Initial state. All nodes unvisited.' });
+
+  const stack = [0];
+  nodeStates[0]='queued';
+  dfsSteps.push({ ns:{...nodeStates}, stack:[...stack], visited:[], info:'Push start node 0 onto the stack.' });
+
+  while (stack.length > 0) {
+    const v = stack[stack.length-1]; // peek top
+    if (visited.has(v)) { stack.pop(); continue; }
+    // pop and process
+    stack.pop();
+    if (visited.has(v)) continue;
+    visited.add(v);
+    nodeStates[v] = 'current';
+    dfsSteps.push({ ns:{...nodeStates}, stack:[...stack], visited:[...visited], info:`Pop node ${v} from stack. Mark as visited.` });
+    nodeStates[v] = 'visited';
+
+    const neighbors = adj[v].filter(u => !visited.has(u));
+    if (neighbors.length > 0) {
+      neighbors.forEach(u => { stack.push(u); nodeStates[u]='queued'; });
+      dfsSteps.push({ ns:{...nodeStates}, stack:[...stack], visited:[...visited], info:`Push unvisited neighbors of ${v}: [${neighbors.join(', ')}] onto stack. Top = ${stack[stack.length-1]}.` });
+    } else {
+      dfsSteps.push({ ns:{...nodeStates}, stack:[...stack], visited:[...visited], info:`Node ${v} has no unvisited neighbors. Continue popping.` });
+    }
+  }
+  const sf = {}; dfsGraph.nodes.forEach(n=>sf[n.id]='visited');
+  dfsSteps.push({ ns:sf, stack:[], visited:[...visited], info:'✅ DFS complete! Stack empty, all reachable nodes visited.' });
+}
+
+function applyDFSState(s) {
+  dfsGraph.nodes.forEach(n => {
+    const el = document.getElementById(`dfs-n-${n.id}`);
+    if (!el) return;
+    el.className.baseVal = 'svg-graph-node';
+    const st = s.ns[n.id];
+    if (st) el.classList.add(st);
+  });
+  // Stack: top is last element
+  const stackVis = document.getElementById('dfs-stack-vis');
+  if (stackVis) {
+    if (s.stack.length === 0) {
+      stackVis.innerHTML = '<span style="color:var(--text-muted);font-family:\'Space Mono\',monospace;font-size:0.75rem;">empty</span>';
+    } else {
+      const display = [...s.stack].reverse(); // show top first
+      stackVis.innerHTML = display.map((n,i)=>
+        `${renderNodePill(n,'var(--accent2)')}${i<display.length-1?'<span style="color:var(--text-muted);font-size:0.7rem;margin:0 1px;">↓</span>':''}`
+      ).join('');
+    }
+  }
+  const vVis = document.getElementById('dfs-visited-vis');
+  if (vVis) {
+    if (!s.visited || s.visited.length === 0) {
+      vVis.innerHTML = '<span style="color:var(--text-muted);font-family:\'Space Mono\',monospace;font-size:0.75rem;">none yet</span>';
+    } else {
+      vVis.innerHTML = s.visited.map(n => renderNodePill(n,'var(--accent3)')).join('');
+    }
+  }
+  document.getElementById('dfs-info').innerHTML = s.info;
+}
+
+function dfsStep(dir) {
+  dfsCurrent = Math.max(0, Math.min(dfsSteps.length-1, dfsCurrent+dir));
+  applyDFSState(dfsSteps[dfsCurrent]);
+  updateControls('dfs-prev', 'dfs-next', 'dfs-counter', dfsCurrent, dfsSteps.length-1);
+}
+function dfsReset() { dfsCurrent=0; dfsStep(0); }
+// ============================================================
+const dijkGraph = {
+  nodes: [{id:0,x:80,y:140},{id:1,x:220,y:60},{id:2,x:220,y:220},{id:3,x:380,y:60},{id:4,x:380,y:220}],
+  edges: [{u:0,v:1,w:4},{u:0,v:2,w:2},{u:1,v:2,w:1},{u:1,v:3,w:5},{u:2,v:4,w:8},{u:3,v:4,w:2},{u:1,v:4,w:6}]
+};
+let dijkSteps = [], dijkCurrent = 0;
+
+function initDijkSVG() {
+  const svg = document.getElementById('dijk-svg');
+  if (!svg) return;
+  svg.innerHTML = '';
+  dijkGraph.edges.forEach(e => {
+    const na = dijkGraph.nodes[e.u], nb = dijkGraph.nodes[e.v];
+    const mx = (na.x+nb.x)/2, my = (na.y+nb.y)/2;
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1',na.x); line.setAttribute('y1',na.y);
+    line.setAttribute('x2',nb.x); line.setAttribute('y2',nb.y);
+    line.setAttribute('class','svg-graph-edge'); line.setAttribute('id',`dijk-e-${e.u}-${e.v}`);
+    svg.appendChild(line);
+    const wt = document.createElementNS('http://www.w3.org/2000/svg','text');
+    wt.setAttribute('x',mx); wt.setAttribute('y',my-8);
+    wt.setAttribute('class','edge-weight'); wt.textContent = e.w;
+    svg.appendChild(wt);
+  });
+  dijkGraph.nodes.forEach(n => {
+    const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',n.x); c.setAttribute('cy',n.y); c.setAttribute('r',22);
+    c.setAttribute('class','svg-graph-node'); c.setAttribute('id',`dijk-n-${n.id}`);
+    const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x',n.x); t.setAttribute('y',n.y);
+    t.setAttribute('class','node-label'); t.textContent = n.id;
+    g.appendChild(c); g.appendChild(t);
+    svg.appendChild(g);
+    // Distance label
+    const dl = document.createElementNS('http://www.w3.org/2000/svg','text');
+    dl.setAttribute('x',n.x); dl.setAttribute('y',n.y+38);
+    dl.setAttribute('class','edge-weight'); dl.setAttribute('id',`dijk-d-${n.id}`);
+    dl.textContent = '∞';
+    svg.appendChild(dl);
+  });
+}
+
+function generateDijkSteps() {
+  dijkSteps = [];
+  const adj = {0:[{v:1,w:4},{v:2,w:2}],1:[{v:0,w:4},{v:2,w:1},{v:3,w:5},{v:4,w:6}],2:[{v:0,w:2},{v:1,w:1},{v:4,w:8}],3:[{v:1,w:5},{v:4,w:2}],4:[{v:2,w:8},{v:3,w:2},{v:1,w:6}]};
+  const INF = Infinity;
+  const d = [INF,INF,INF,INF,INF]; d[0]=0;
+  const S = new Set();
+
+  function snap(ns,info) {
+    dijkSteps.push({ ns:{...ns}, d:[...d], info });
+  }
+
+  const ns = {};
+  snap(ns, 'Initialize: d[0]=0, all others ∞. S={}.');
+  ns[0]='selected';
+  snap(ns, 'Source node 0 selected (d=0). S={}.');
+
+  for (let iter=0; iter<dijkGraph.nodes.length; iter++) {
+    // Pick min not in S
+    let x=-1, minD=INF;
+    for (let i=0;i<5;i++) if (!S.has(i) && d[i]<minD) { minD=d[i]; x=i; }
+    if (x<0) break;
+    S.add(x);
+    ns[x]='visited';
+    snap(ns, `Add node ${x} (d=${d[x]}) to S. Now S={${[...S].join(',')}}. Relax edges from ${x}.`);
+    for (const {v,w} of adj[x]) {
+      if (!S.has(v)) {
+        if (d[x]+w < d[v]) {
+          d[v] = d[x]+w;
+          ns[v]='queued';
+          snap(ns, `Relax edge (${x},${v},w=${w}): d[${v}] updated to ${d[v]}.`);
+        }
+      }
+    }
+  }
+  snap(ns, `✅ Dijkstra complete! Shortest distances from 0: ${d.map((v,i)=>`d[${i}]=${v}`).join(', ')}`);
+}
+
+function applyDijkState(s) {
+  dijkGraph.nodes.forEach(n => {
+    const el = document.getElementById(`dijk-n-${n.id}`);
+    if (!el) return;
+    el.className.baseVal = 'svg-graph-node';
+    const st = s.ns[n.id];
+    if (st) el.classList.add(st);
+    const dl = document.getElementById(`dijk-d-${n.id}`);
+    if (dl) dl.textContent = s.d[n.id] === Infinity ? '∞' : s.d[n.id];
+  });
+  // S set pills
+  const sVis = document.getElementById('dijk-s-vis');
+  if (sVis) {
+    const inS = dijkGraph.nodes.map(n=>n.id).filter(id => s.ns[id]==='visited');
+    sVis.innerHTML = inS.length === 0
+      ? '<span style="color:var(--text-muted);font-family:\'Space Mono\',monospace;font-size:0.75rem;">empty</span>'
+      : inS.map(n => renderNodePill(n,'var(--accent3)')).join('');
+  }
+  // Priority queue: unvisited nodes sorted by d[], show d value
+  const pqVis = document.getElementById('dijk-pq-vis');
+  if (pqVis) {
+    const unvisited = dijkGraph.nodes.map(n=>n.id)
+      .filter(id => s.ns[id] !== 'visited')
+      .sort((a,b) => s.d[a]-s.d[b]);
+    pqVis.innerHTML = unvisited.length === 0
+      ? '<span style="color:var(--text-muted);font-family:\'Space Mono\',monospace;font-size:0.75rem;">all finalized</span>'
+      : unvisited.map((n,i) => {
+          const dv = s.d[n]===Infinity?'∞':s.d[n];
+          const isMin = i===0;
+          return `<span style="display:inline-flex;flex-direction:column;align-items:center;gap:2px;">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;border:2px solid ${isMin?'var(--warning)':'var(--accent2)'};font-family:'Space Mono',monospace;font-size:0.78rem;font-weight:700;color:${isMin?'var(--warning)':'var(--accent2)'};">${n}</span>
+            <span style="font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--text-muted);">d=${dv}</span>
+          </span>${i<unvisited.length-1?'<span style="color:var(--text-muted);font-size:0.65rem;margin:0 1px;align-self:center;">›</span>':''}`;
+        }).join('');
+  }
+  document.getElementById('dijk-dist-disp').textContent = 'Distances: ' + s.d.map((v,i)=>`d[${i}]=${v===Infinity?'∞':v}`).join('  ');
+  document.getElementById('dijk-info').innerHTML = s.info;
+}
+
+function dijkStep(dir) {
+  dijkCurrent = Math.max(0, Math.min(dijkSteps.length-1, dijkCurrent+dir));
+  applyDijkState(dijkSteps[dijkCurrent]);
+  updateControls('dijk-prev', 'dijk-next', 'dijk-counter', dijkCurrent, dijkSteps.length-1);
+}
+function dijkReset() { dijkCurrent=0; dijkStep(0); }
+
+// ============================================================
+// PRIM'S MST DEMO (SVG)
+// ============================================================
+const primGraph = {
+  nodes: [{id:0,x:80,y:140},{id:1,x:230,y:50},{id:2,x:230,y:230},{id:3,x:380,y:50},{id:4,x:380,y:230}],
+  edges: [{u:0,v:1,w:10},{u:0,v:2,w:20},{u:1,v:2,w:30},{u:1,v:3,w:40},{u:2,v:4,w:50},{u:3,v:4,w:60},{u:1,v:4,w:25}]
+};
+let primSteps = [], primCurrent = 0;
+
+function initPrimSVG() {
+  const svg = document.getElementById('prim-svg');
+  if (!svg) return;
+  svg.innerHTML = '';
+  primGraph.edges.forEach(e => {
+    const na = primGraph.nodes[e.u], nb = primGraph.nodes[e.v];
+    const mx=(na.x+nb.x)/2,my=(na.y+nb.y)/2;
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1',na.x); line.setAttribute('y1',na.y);
+    line.setAttribute('x2',nb.x); line.setAttribute('y2',nb.y);
+    line.setAttribute('class','svg-graph-edge'); line.setAttribute('id',`prim-e-${e.u}-${e.v}`);
+    svg.appendChild(line);
+    const wt = document.createElementNS('http://www.w3.org/2000/svg','text');
+    wt.setAttribute('x',mx); wt.setAttribute('y',my-8);
+    wt.setAttribute('class','edge-weight'); wt.textContent = e.w;
+    svg.appendChild(wt);
+  });
+  primGraph.nodes.forEach(n => {
+    const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',n.x); c.setAttribute('cy',n.y); c.setAttribute('r',22);
+    c.setAttribute('class','svg-graph-node'); c.setAttribute('id',`prim-n-${n.id}`);
+    const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x',n.x); t.setAttribute('y',n.y);
+    t.setAttribute('class','node-label'); t.textContent = n.id;
+    g.appendChild(c); g.appendChild(t); svg.appendChild(g);
+  });
+}
+
+function generatePrimSteps() {
+  primSteps = [];
+  const adj = {
+    0:[{v:1,w:10},{v:2,w:20}],
+    1:[{v:0,w:10},{v:2,w:30},{v:3,w:40},{v:4,w:25}],
+    2:[{v:0,w:20},{v:1,w:30},{v:4,w:50}],
+    3:[{v:1,w:40},{v:4,w:60}],
+    4:[{v:2,w:50},{v:3,w:60},{v:1,w:25}]
+  };
+
+  function getFrontier(T) {
+    const edges = [];
+    for (const u of T) {
+      for (const {v,w} of adj[u]) {
+        if (!T.has(v)) edges.push({u,v,w});
+      }
+    }
+    // deduplicate and sort by weight
+    const seen = new Set();
+    return edges.filter(e => {
+      const key = `${Math.min(e.u,e.v)}-${Math.max(e.u,e.v)}`;
+      if (seen.has(key)) return false; seen.add(key); return true;
+    }).sort((a,b)=>a.w-b.w);
+  }
+
+  const T = new Set([0]);
+  const mstEdges = [];
+  let totalCost = 0;
+  const ns = {0:'visited'};
+
+  primSteps.push({ ns:{...ns}, mstE:[], cost:0, tSet:[0], frontier: getFrontier(T), info:'Start: vertex 0 added to T. Frontier shows all edges from T to outside.' });
+
+  while (T.size < primGraph.nodes.length) {
+    const frontier = getFrontier(T);
+    if (frontier.length === 0) break;
+    const best = frontier[0];
+    T.add(best.v); mstEdges.push(best);
+    totalCost += best.w;
+    ns[best.v]='visited';
+    const newFrontier = getFrontier(T);
+    primSteps.push({ ns:{...ns}, mstE:[...mstEdges], cost:totalCost, tSet:[...T], frontier:newFrontier, info:`Cheapest frontier edge: (${best.u}–${best.v}, w=${best.w}). Add vertex ${best.v} to T. Total cost: ${totalCost}.` });
+  }
+  primSteps.push({ ns:{...ns}, mstE:[...mstEdges], cost:totalCost, tSet:[...T], frontier:[], info:`✅ MST complete! Total cost = ${totalCost}. Edges: ${mstEdges.map(e=>`(${e.u}–${e.v}:${e.w})`).join(', ')}` });
+}
+
+function applyPrimState(s) {
+  primGraph.nodes.forEach(n => {
+    const el = document.getElementById(`prim-n-${n.id}`);
+    if (!el) return;
+    el.className.baseVal = 'svg-graph-node';
+    if (s.ns[n.id]) el.classList.add(s.ns[n.id]);
+  });
+  primGraph.edges.forEach(e => {
+    const el = document.getElementById(`prim-e-${e.u}-${e.v}`);
+    if (el) { el.className.baseVal = 'svg-graph-edge'; el.style.stroke=''; el.style.strokeWidth=''; }
+  });
+  s.mstE.forEach(({u,v}) => {
+    const el = document.getElementById(`prim-e-${u}-${v}`) || document.getElementById(`prim-e-${v}-${u}`);
+    if (el) { el.style.stroke='var(--accent3)'; el.style.strokeWidth='4'; }
+  });
+  // T set pills
+  const tVis = document.getElementById('prim-t-vis');
+  if (tVis) {
+    tVis.innerHTML = s.tSet && s.tSet.length > 0
+      ? s.tSet.map(n => renderNodePill(n,'var(--accent3)')).join('')
+      : '<span style="color:var(--text-muted);font-family:\'Space Mono\',monospace;font-size:0.75rem;">empty</span>';
+  }
+  // Frontier edges
+  const fVis = document.getElementById('prim-frontier-vis');
+  if (fVis) {
+    if (!s.frontier || s.frontier.length === 0) {
+      fVis.innerHTML = '<span style="color:var(--text-muted);font-family:\'Space Mono\',monospace;font-size:0.75rem;">none</span>';
+    } else {
+      fVis.innerHTML = s.frontier.map((e,i) => {
+        const isMin = i === 0;
+        return `<span style="padding:2px 8px;border-radius:4px;border:1.5px solid ${isMin?'var(--warning)':'var(--border)'};color:${isMin?'var(--warning)':'var(--text-muted)'};font-family:'Space Mono',monospace;font-size:0.7rem;white-space:nowrap;">${e.u}–${e.v}: ${e.w}</span>`;
+      }).join('');
+    }
+  }
+  document.getElementById('prim-cost-disp').textContent = `MST Cost: ${s.cost}`;
+  document.getElementById('prim-info').innerHTML = s.info;
+}
+
+function primStep(dir) {
+  primCurrent = Math.max(0, Math.min(primSteps.length-1, primCurrent+dir));
+  applyPrimState(primSteps[primCurrent]);
+  updateControls('prim-prev', 'prim-next', 'prim-counter', primCurrent, primSteps.length-1);
+}
+function primReset() { primCurrent=0; primStep(0); }
+
+// ============================================================
+// SIDEBAR ACTIVE LINK
+// ============================================================
+function updateActiveLink() {
+  const sections = document.querySelectorAll('.section');
+  const links = document.querySelectorAll('.nav-link');
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 100) current = s.id;
+  });
+  links.forEach(l => {
+    l.classList.remove('active');
+    if (l.getAttribute('href') === '#' + current) l.classList.add('active');
+  });
+}
+
+// ============================================================
+// INIT
+// ============================================================
+window.addEventListener('load', () => {
+  generateBubbleSteps(); bubbleReset();
+  generateSelSteps(); selReset();
+  generateInsSteps(); insReset();
+  generateMergeSteps(); mergeReset();
+  generateQSSteps(); qsReset();
+  generateHeapSteps(); heapReset();
+  generateBSSteps(); bsReset();
+
+  initBFSSVG(); generateBFSSteps(); bfsReset();
+  initDFSSVG(); generateDFSSteps(); dfsReset();
+  initDijkSVG(); generateDijkSteps(); dijkReset();
+  initPrimSVG(); generatePrimSteps(); primReset();
+});
+
+window.addEventListener('scroll', updateActiveLink);
+</script>
+</body>
+</html>
